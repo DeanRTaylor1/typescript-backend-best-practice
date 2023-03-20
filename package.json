@@ -4,7 +4,7 @@
   "description": "a backend designed using best practices",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --poll src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --poll src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "jest --watchAll --no-cache --detectOpenHandles",
@@ -63,6 +63,7 @@
     "jest": "^29.5.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",
-    "ts-node-dev": "^2.0.0"
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.1.2"
   }
 }

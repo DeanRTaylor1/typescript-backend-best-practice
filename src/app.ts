@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import express, { Response, Request } from "express";
 //This is a hack to get async/await to work with express and stop the app from crashing
 import "express-async-errors";
@@ -25,7 +26,7 @@ if (process.env.NODE_ENV !== "test") {
   morgan.token("colored-status", (req: Request, res: Response) =>
     formatStatus(res.statusCode)
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   morgan.token("colored-method", (req: Request, res: Response) =>
     formatMethod(req.method)
   );
@@ -45,7 +46,7 @@ if (process.env.NODE_ENV !== "test") {
 app.use(v1SignupRouter);
 
 //not found 404
-app.all("*", async (req, res) => {
+app.all("*", async (req: Request, res: Response) => {
   throw new NotFoundError();
 });
 
