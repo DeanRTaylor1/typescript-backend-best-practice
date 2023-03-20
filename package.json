@@ -7,10 +7,23 @@
     "dev": "ts-node-dev --poll src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "jest --watchAll --no-cach --detectOpenHandles",
+    "test": "jest --watchAll --no-cache --detectOpenHandles",
     "postgres": "docker run --name postgres14 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:14-alpine",
     "createdb": "docker exec -it postgres14 createdb --username=root --owner=root typescript-backend-best-practice",
-    "postgres:stop": "docker stop postgres14"
+    "postgres:stop": "docker stop postgres14",
+    "create-migration": "node ./scripts/create-migration.js",
+    "migrate-up": "db-migrate up --config ./src/db/database.json --migrations-dir ./src/db/migrations",
+    "migrate-down": "db-migrate down --config ./src/db/database.json --migrations-dir ./src/db/migrations"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ],
+    "moduleNameMapper": {
+      "^@src/(.*)$": "<rootDir>/src/$1"
+    }
   },
   "repository": {
     "type": "git",
@@ -25,6 +38,7 @@
     "@types/cli-color": "^2.0.2",
     "@types/helmet": "^4.0.0",
     "@types/pg": "^8.6.6",
+    "@types/supertest": "^2.0.12",
     "chalk": "^5.2.0",
     "cli-color": "^2.0.3",
     "dotenv": "^16.0.3",
@@ -39,6 +53,13 @@
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/morgan": "^1.9.4",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.5.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",

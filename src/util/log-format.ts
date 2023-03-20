@@ -1,5 +1,4 @@
-import clc from 'cli-color';
-import { Request, Response } from 'express';
+import clc from "cli-color";
 
 export const formatStatus = (status: number) => {
   switch (true) {
@@ -18,15 +17,15 @@ export const formatStatus = (status: number) => {
 
 export const formatMethod = (method: string) => {
   switch (method) {
-    case 'GET':
+    case "GET":
       return clc.bgBlueBright(` ${method}      =>`);
-    case 'POST':
+    case "POST":
       return clc.bgCyan(` ${method}     =>`);
-    case 'PUT':
+    case "PUT":
       return clc.bgYellow(` ${method}      =>`);
-    case 'PATCH':
+    case "PATCH":
       return clc.bgMagenta(` ${method}    =>`);
-    case 'DELETE':
+    case "DELETE":
       return clc.bgRed(` ${method}   =>`);
     default:
       return clc.bgBlack();

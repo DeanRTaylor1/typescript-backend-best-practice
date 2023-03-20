@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": "root",
+    "password": "secret",
+    "host": "localhost",
+    "database": "typescript-backend-best-practice",
+    "port": 5432
+  }
+}
