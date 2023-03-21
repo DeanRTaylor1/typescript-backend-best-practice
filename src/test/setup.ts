@@ -2,6 +2,7 @@ import pool from "@src/db/pool";
 
 beforeAll(async () => {
   // TODO - add database connection and env variable setup
+  process.env.PASETO_KEY = "12345678901234567890123456789012";
   try {
     pool.connect({
       host: "localhost",

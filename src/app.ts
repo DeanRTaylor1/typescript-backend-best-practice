@@ -9,6 +9,7 @@ import { NotFoundError } from "./errors";
 import { errorHandler } from "./middleware/error-handler";
 import { formatMethod, formatStatus } from "./util/";
 import { v1SignupRouter } from "./v1/routes/auth/signup";
+import { v1LoginRouter } from "./v1/routes/auth/login";
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config();
@@ -44,6 +45,7 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 app.use(v1SignupRouter);
+app.use(v1LoginRouter);
 
 //not found 404
 app.all("*", async (req: Request, res: Response) => {

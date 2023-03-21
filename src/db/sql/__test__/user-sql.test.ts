@@ -23,7 +23,9 @@ it("should return a user with the correct paramaters if the user exists", async 
   expect(pgUser.hashed_password).toEqual(user.hashed_password);
   expect(pgUser.username).toEqual(user.username);
 
-  const existingUser: User = await getUser(pgUser.email);
+  const existingUser = (await getUser(pgUser.email)) as User;
+
+  expect(existingUser).toBeTruthy();
 
   expect(existingUser.email).toEqual(user.email);
   expect(existingUser.full_name).toEqual(user.full_name);
