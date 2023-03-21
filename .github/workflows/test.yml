@@ -38,5 +38,7 @@ jobs:
           node-version: "18.x"
       - name: Install dependencies
         run: npm install
+      - name: run migrations
+        run: npm run migrate-up
       - name: test
-        run: npm run test
+        run: npm run test-ci

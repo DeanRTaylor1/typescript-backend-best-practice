@@ -14,7 +14,7 @@
     "create-migration": "node ./scripts/create-migration.js",
     "migrate-up": "db-migrate up --config ./src/db/database.json --migrations-dir ./src/db/migrations",
     "migrate-down": "db-migrate down --config ./src/db/database.json --migrations-dir ./src/db/migrations",
-    "test-js": "jest --testMatch=`dist/**/*.test.js"
+    "test-ci": "jest --no-cache --detectOpenHandles"
   },
   "jest": {
     "preset": "ts-jest",
