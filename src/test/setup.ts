@@ -1,5 +1,3 @@
-import { app } from "../app";
-import { Request } from "supertest";
 import pool from "@src/db/pool";
 
 beforeAll(async () => {
