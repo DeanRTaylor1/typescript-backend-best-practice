@@ -1,3 +1,5 @@
+import { createUserParams } from "@src/db/sql/user";
+
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
 function generateEmail() {
@@ -9,7 +11,7 @@ function generateEmail() {
   return `${email}@gmail.com`;
 }
 
-function generateUser() {
+function generateString() {
   let user = "";
   for (let i = 0; i < 9; i++) {
     user += alphabet[Math.floor(Math.random() * alphabet.length)];
@@ -18,4 +20,15 @@ function generateUser() {
   return `${user}`;
 }
 
-export { generateEmail, generateUser };
+function generateUser(): createUserParams {
+  const user: createUserParams = {
+    email: generateEmail(),
+    hashed_password: "test",
+    username: generateString(),
+    full_name: generateString(),
+  };
+
+  return user;
+}
+
+export { generateEmail, generateUser, generateString };

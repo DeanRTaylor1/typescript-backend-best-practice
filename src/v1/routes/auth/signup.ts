@@ -3,6 +3,10 @@ import { Request, Response } from "express";
 import { apiRoutes } from "@src/types/api-routes";
 import { body } from "express-validator";
 import express from "express";
+import { BadRequestError } from "@src/errors";
+import { createUser, createUserParams } from "@src/db/sql/user";
+import { User } from "@src/db/models/user";
+import { convertToUserResponse } from "@src/types/user-response";
 const router = express.Router();
 
 router.post(
@@ -25,10 +29,27 @@ router.post(
       .escape()
       .isLength({ min: 4, max: 20 })
       .withMessage("Username must be between 4 and 20 characters"),
+    body("full_name").not().isEmpty().escape(),
   ],
   validateRequest,
-  (req: Request, res: Response) => {
-    res.status(201).send("Hello World");
+  async (req: Request, res: Response) => {
+    const { email, password, username, full_name } = req.body;
+    if (!email || !password || !username || !full_name) {
+      throw new BadRequestError("missing paramaters");
+    }
+    let newUser: createUserParams | User = {
+      email,
+      hashed_password: password,
+      username,
+      full_name,
+    };
+    try {
+      newUser = await createUser(newUser);
+
+      res.status(201).send(convertToUserResponse(newUser));
+    } catch (err) {
+      throw new BadRequestError("Error creating user.");
+    }
   }
 );
 

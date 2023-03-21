@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --poll src/index.ts",
-    "build": "tsc",
+    "build": "rmdir /s /q dist && tsc",
     "start": "node dist/index.js",
     "test": "jest --watchAll --no-cache --detectOpenHandles",
     "postgres": "docker run --name postgres14 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:14-alpine",
@@ -13,7 +13,8 @@
     "postgres:stop": "docker stop postgres14",
     "create-migration": "node ./scripts/create-migration.js",
     "migrate-up": "db-migrate up --config ./src/db/database.json --migrations-dir ./src/db/migrations",
-    "migrate-down": "db-migrate down --config ./src/db/database.json --migrations-dir ./src/db/migrations"
+    "migrate-down": "db-migrate down --config ./src/db/database.json --migrations-dir ./src/db/migrations",
+    "test-js": "jest --testMatch=`dist/**/*.test.js"
   },
   "jest": {
     "preset": "ts-jest",

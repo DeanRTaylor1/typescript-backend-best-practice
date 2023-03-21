@@ -1,3 +1,4 @@
+import { generateEmail, generateString } from "@src/util/random";
 import request from "supertest";
 import { app } from "../../../../app";
 
@@ -5,9 +6,10 @@ it("returns a 201 on successful signup", async () => {
   return request(app)
     .post("/api/v1/auth/signup")
     .send({
-      email: "test@test.com",
+      email: generateEmail(),
       password: "password",
-      username: "test",
+      username: generateString(),
+      full_name: generateString(),
     })
     .expect(201);
 });
@@ -16,9 +18,10 @@ it("returns a 400 with invalid email", async () => {
   return request(app)
     .post("/api/v1/auth/signup")
     .send({
-      email: "testtest.com",
+      email: generateString(),
       password: "Password123",
-      username: "testTests",
+      username: generateString(),
+      full_name: generateString(),
     })
     .expect(400);
 });
@@ -27,45 +30,59 @@ it("returns a 400 with invalid password", async () => {
   return request(app)
     .post("/api/v1/auth/signup")
     .send({
-      email: "test@test.com",
+      email: generateEmail(),
       password: "p",
       username: "testTests",
+      full_name: generateString(),
     })
     .expect(400);
 });
 
-it("returns a 400 with missing email and/or password", async () => {
+it("returns a 400 with missing parameters", async () => {
   await request(app)
     .post("/api/v1/auth/signup")
     .send({
-      email: "test@test.com",
+      email: generateEmail(),
+      password: "password",
     })
     .expect(400);
   await request(app)
     .post("/api/v1/auth/signup")
     .send({
       password: "p",
+      full_name: generateString(),
+    })
+    .expect(400);
+  await request(app)
+    .post("/api/v1/auth/signup")
+    .send({
+      email: generateEmail,
+      full_name: generateString(),
     })
     .expect(400);
   await request(app).post("/api/v1/auth/signup").send({}).expect(400);
 });
 
 it("disallows duplicate emails", async () => {
+  const email = generateEmail();
+
   await request(app)
     .post("/api/v1/auth/signup")
     .send({
-      email: "test@test.com",
+      email,
       password: "Password",
-      username: "testTests",
+      username: generateString(),
+      full_name: generateString(),
     })
     .expect(201);
 
   await request(app)
     .post("/api/v1/auth/signup")
     .send({
-      email: "test@test.com",
+      email,
       password: "Password",
       username: "testTests",
+      full_name: generateString(),
     })
     .expect(400);
 });
