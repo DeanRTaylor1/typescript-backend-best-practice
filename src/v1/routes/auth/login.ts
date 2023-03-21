@@ -8,6 +8,7 @@ import { createUser, createUserParams, getUser } from "@src/db/sql/user";
 import { User } from "@src/db/models/user";
 import { convertToUserResponse } from "@src/types/user-response";
 import { Password } from "@src/util/password";
+import { createToken } from "@src/util/paseto";
 const router = express.Router();
 
 router.post(
@@ -26,6 +27,7 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
+    console.log(req.currentUser);
     const { email, password } = req.body;
     if (!email || !password) {
       throw new BadRequestError("missing paramaters");
@@ -44,9 +46,9 @@ router.post(
       throw new BadRequestError("Unable to log in.");
     }
 
-    res
-      .status(201)
-      .send({ access_token: "token", user: convertToUserResponse(user) });
+    const access_token = await createToken(user.username, user.email, 15);
+
+    res.status(201).send({ access_token, user: convertToUserResponse(user) });
   }
 );
 

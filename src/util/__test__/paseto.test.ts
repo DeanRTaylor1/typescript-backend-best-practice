@@ -1,4 +1,4 @@
-import { createToken, payload, verifyToken } from "../paseto";
+import { createToken, isValid, payload, verifyToken } from "../paseto";
 import { generateEmail, generateString } from "../random";
 
 it("generates a paseto token based upon a valid input string", async () => {
@@ -30,4 +30,29 @@ it("returns an empty string if given an invalid PASETO token", async () => {
 
   const payload = await verifyToken("token" + token);
   expect(payload).toBeFalsy();
+});
+
+it("returns true if token has not expired", async () => {
+  const email = generateEmail();
+  const username = generateString();
+
+  const token = await createToken(email, username, 15);
+
+  const payload = (await verifyToken(token)) as payload;
+
+  const valid = isValid(payload);
+  expect(valid).toBeTruthy();
+  console.log(valid);
+});
+
+it("returns true if token has not expired", async () => {
+  const email = generateEmail();
+  const username = generateString();
+
+  const token = await createToken(email, username, -15);
+
+  const payload = (await verifyToken(token)) as payload;
+
+  const valid = isValid(payload);
+  expect(valid).toBeFalsy();
 });

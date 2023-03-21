@@ -27,6 +27,11 @@ export async function verifyToken(token: string) {
       process.env.PASETO_KEY!
     )) as payload;
 
+    const valid = isValid(payload);
+    if (!valid) {
+      return "";
+    }
+
     return payload;
   } catch (err) {
     return "";
@@ -45,4 +50,11 @@ function newPayload(
     expires_at: new Date().getTime() + duration,
   };
   return payload;
+}
+
+export function isValid(payload: payload) {
+  if (new Date().getTime() > payload.expires_at) {
+    return false;
+  }
+  return true;
 }
