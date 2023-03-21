@@ -7,6 +7,7 @@ import { BadRequestError } from "@src/errors";
 import { createUser, createUserParams } from "@src/db/sql/user";
 import { User } from "@src/db/models/user";
 import { convertToUserResponse } from "@src/types/user-response";
+import { Password } from "@src/util/password";
 const router = express.Router();
 
 router.post(
@@ -37,9 +38,10 @@ router.post(
     if (!email || !password || !username || !full_name) {
       throw new BadRequestError("missing paramaters");
     }
+    const hashed_password = await Password.toHash(password);
     let newUser: createUserParams | User = {
       email,
-      hashed_password: password,
+      hashed_password,
       username,
       full_name,
     };
