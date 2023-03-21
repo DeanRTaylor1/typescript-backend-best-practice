@@ -11,7 +11,8 @@ const PORT = process.env.PORT || 8080;
   if (
     !process.env.PG_HOST ||
     !process.env.PG_USERNAME ||
-    !process.env.PG_PASSWORD
+    !process.env.PG_PASSWORD ||
+    !process.env.PASETO_KEY
   ) {
     console.log(
       colors.FgRed,

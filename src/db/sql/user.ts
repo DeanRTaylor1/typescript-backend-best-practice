@@ -32,7 +32,7 @@ async function getUser(email: string) {
   ]);
 
   if (!response) {
-    throw new Error("User not found");
+    return "";
   }
 
   const { rows } = response;
