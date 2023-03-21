@@ -45,7 +45,7 @@ it("returns true if token has not expired", async () => {
   console.log(valid);
 });
 
-it("returns true if token has not expired", async () => {
+it("returns false if token has not expired", async () => {
   const email = generateEmail();
   const username = generateString();
 
@@ -53,6 +53,5 @@ it("returns true if token has not expired", async () => {
 
   const payload = (await verifyToken(token)) as payload;
 
-  const valid = isValid(payload);
-  expect(valid).toBeFalsy();
+  expect(payload).toBeFalsy();
 });
