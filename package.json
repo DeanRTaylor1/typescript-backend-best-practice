@@ -16,7 +16,8 @@
     "migrate-down": "db-migrate down --config ./src/db/database.json --migrations-dir ./src/db/migrations",
     "migrate-up1": "db-migrate up --count 1 --config ./src/db/database.json --migrations-dir ./src/db/migrations",
     "migrate-down1": "db-migrate down --count 1 --config ./src/db/database.json --migrations-dir ./src/db/migrations",
-    "test-ci": "jest --no-cache --detectOpenHandles --coverage"
+    "test-ci": "jest --no-cache --detectOpenHandles --coverage",
+    "lint": "npx eslint . --ext .ts --fix"
   },
   "jest": {
     "preset": "ts-jest",

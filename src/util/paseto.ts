@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+/**
+ * @fileoverview Provides functions for creating and verifying PASETO tokens.
+ * @module auth/paseto
+ */
+
 import { V3 } from "paseto";
 
 export type payload = {
+  id: number;
   username: string;
   email: string;
   issued_at: number;
@@ -9,11 +15,12 @@ export type payload = {
 };
 
 export async function createToken(
+  id: number,
   username: string,
   email: string,
   duration: number
 ) {
-  const payload = newPayload(email, username, duration * 60000);
+  const payload = newPayload(id, email, username, duration * 60000);
 
   const token = await V3.encrypt(payload, process.env.PASETO_KEY!);
 
@@ -39,11 +46,13 @@ export async function verifyToken(token: string) {
 }
 
 function newPayload(
+  id: number,
   username: string,
   email: string,
   duration: number
 ): payload {
   const payload = {
+    id,
     username,
     email,
     issued_at: new Date().getTime(),
