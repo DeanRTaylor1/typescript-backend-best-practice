@@ -1,3 +1,4 @@
+[![ci-test](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml/badge.svg)](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml)
 # typescript-backend-best-practice Repo
 
 ## Setup Dev Environment
