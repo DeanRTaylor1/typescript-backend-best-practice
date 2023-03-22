@@ -1,4 +1,4 @@
-import { createUserParams } from "@src/db/sql/user";
+import { createUserParams } from "@src/db/sql/user.sql";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 

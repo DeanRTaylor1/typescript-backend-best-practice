@@ -1,6 +1,6 @@
 import { User } from "@src/db/models/user";
 import { generateEmail, generateUser } from "@src/util/random";
-import { createUser, getUser } from "../user";
+import { createUser, getUser } from "../user.sql";
 
 it("should create a user successfully with the correct parameters", async () => {
   const user = generateUser();

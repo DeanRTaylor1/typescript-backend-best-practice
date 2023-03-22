@@ -1,12 +1,13 @@
 CREATE TABLE "accounts" (
   "id" SERIAL PRIMARY KEY,
-  "user" integer NOT NULL,
+  "user" integer UNIQUE NOT NULL,
   "currency" varchar NOT NULL,
-  "created_at" timestamptz NOT NULL DEFAULT (now())
+  "balance" BIGINT NOT NULL DEFAULT 0,
+  "created_at" timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE INDEX ON "accounts" ("user");
 
-CREATE UNIQUE INDEX ON "accounts" ("user", "currency");
+CREATE UNIQUE INDEX ON "accounts" ("user");
 
 ALTER TABLE "accounts" ADD FOREIGN KEY ("user") REFERENCES "users" ("id");

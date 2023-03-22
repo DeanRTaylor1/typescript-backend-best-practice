@@ -4,9 +4,9 @@ import { apiRoutes } from "@src/types/api-routes";
 import { body } from "express-validator";
 import express from "express";
 import { BadRequestError } from "@src/errors";
-import { createUser, createUserParams, getUser } from "@src/db/sql/user";
-import { User } from "@src/db/models/user";
-import { convertToUserResponse } from "@src/types/user-response";
+import { getUser } from "@src/db/sql/user.sql";
+import { convertToUserResponse } from "@src/db/models/user";
+
 import { Password } from "@src/util/password";
 import { createToken } from "@src/util/paseto";
 const router = express.Router();
@@ -46,7 +46,12 @@ router.post(
       throw new BadRequestError("Unable to log in.");
     }
 
-    const access_token = await createToken(user.username, user.email, 15);
+    const access_token = await createToken(
+      user.id,
+      user.username,
+      user.email,
+      15
+    );
 
     res.status(201).send({ access_token, user: convertToUserResponse(user) });
   }

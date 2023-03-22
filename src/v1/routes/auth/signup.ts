@@ -4,14 +4,16 @@ import { apiRoutes } from "@src/types/api-routes";
 import { body } from "express-validator";
 import express from "express";
 import { BadRequestError } from "@src/errors";
-import { createUser, createUserParams } from "@src/db/sql/user";
-import { User } from "@src/db/models/user";
-import { convertToUserResponse } from "@src/types/user-response";
+import { createUser, createUserParams } from "@src/db/sql/user.sql";
+import { convertToUserResponse, dbUser } from "@src/db/models/user";
+
 import { Password } from "@src/util/password";
 const router = express.Router();
 
+// Define a route for signing up
 router.post(
   `${apiRoutes.v1Auth}/signup`,
+  // Add validation middleware to validate request body
   [
     body("email")
       .not()
@@ -32,27 +34,43 @@ router.post(
       .withMessage("Username must be between 4 and 20 characters"),
     body("full_name").not().isEmpty().escape(),
   ],
+  // Validate the request
   validateRequest,
   async (req: Request, res: Response) => {
+    // Extract data from request body
     const { email, password, username, full_name } = req.body;
+
+    // Check if all required parameters are provided
     if (!email || !password || !username || !full_name) {
-      throw new BadRequestError("missing paramaters");
+      // Throw an error if any parameter is missing
+      throw new BadRequestError("missing parameters");
     }
+
+    // Hash the password
     const hashed_password = await Password.toHash(password);
-    let newUser: createUserParams | User = {
+
+    // Define the new user object
+    let newUser: createUserParams | dbUser = {
       email,
       hashed_password,
       username,
       full_name,
     };
-    try {
-      newUser = await createUser(newUser);
 
+    try {
+      // Create the new user
+      newUser = (await createUser(newUser)) as dbUser;
+
+      // Return the user as a response
       res.status(201).send(convertToUserResponse(newUser));
     } catch (err) {
-      throw new BadRequestError("Error creating user.");
+      // If there is an error creating the user, throw an error with a friendly message
+      throw new BadRequestError(
+        "Sorry, we're having trouble creating your account right now. Please try again later."
+      );
     }
   }
 );
 
+// Export the router
 export { router as v1SignupRouter };
