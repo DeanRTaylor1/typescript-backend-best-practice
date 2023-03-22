@@ -1,4 +1,9 @@
 [![ci-test](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml/badge.svg)](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml)
+[![Coverage Status](./icons/badge-statements.svg)](./coverage/index.html)
+[![Coverage Status](./icons/badge-lines.svg)](./coverage/index.html)
+[![Coverage Status](./icons/badge-functions.svg)](./coverage/index.html)
+[![Coverage Status](./icons/badge-branches.svg)](./coverage/index.html)
+
 # typescript-backend-best-practice Repo
 
 ## Setup Dev Environment
