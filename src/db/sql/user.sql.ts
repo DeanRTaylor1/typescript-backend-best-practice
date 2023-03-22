@@ -19,16 +19,22 @@ async function createUser(arg: createUserParams) {
     return rows[0];
   } catch (error) {
     console.log(error);
-    throw error;
+    throw new Error(`Error creating user: ${error}`);
   }
 }
 
 async function getUser(email: string) {
-  const { rows } = (await pool.query(`SELECT * FROM users WHERE email = $1`, [
-    email,
-  ])) as pg.QueryResult<any>;
-
-  return rows[0];
+  try {
+    const { rows } = (await pool.query(`SELECT * FROM users WHERE email = $1`, [
+      email,
+    ])) as pg.QueryResult<any>;
+    if (rows.length === 0) {
+      throw new Error(`No account found with email: ${email}`);
+    }
+    return rows[0];
+  } catch (error) {
+    throw new Error(`Error getting user: ${error}`);
+  }
 }
 
 export { createUser, getUser };

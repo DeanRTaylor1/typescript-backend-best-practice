@@ -7,7 +7,7 @@ import { BadRequestError } from "@src/errors";
 import { createUser, createUserParams } from "@src/db/sql/user.sql";
 import { convertToUserResponse, dbUser } from "@src/db/models/user";
 
-import { Password } from "@src/util/password";
+import { Password } from "@src/util";
 const router = express.Router();
 
 // Define a route for signing up

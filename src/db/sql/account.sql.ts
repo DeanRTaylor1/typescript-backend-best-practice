@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { dbUser } from "../models/user";
 import pool from "../pool";
 import pg from "pg";
 import { createAccountParams } from "../models/account";
@@ -7,23 +6,26 @@ import { createAccountParams } from "../models/account";
 async function createAccount(arg: createAccountParams) {
   try {
     const { rows } = (await pool.query(
-      `INSERT INTO users (user, currency) VALUES ($1, $2) RETURNING *`,
-      [arg.user, arg.currency]
+      `INSERT INTO accounts (owner_id, currency) VALUES ($1, $2) RETURNING *;`,
+      [arg.owner_id, arg.currency]
     )) as pg.QueryResult<any>;
 
     return rows[0];
   } catch (error) {
-    console.log(error);
-    throw error;
+    throw new Error(`Error creating account: ${error}`);
   }
 }
 
-async function getAccount(userid: number) {
+async function getAccount(owner_id: number) {
   const sql = `SELECT * FROM accounts
-    WHERE user = $1 LIMIT 1`;
-  const { rows } = (await pool.query(sql, [userid])) as pg.QueryResult<any>;
+    WHERE owner_id = $1 LIMIT 1`;
+  try {
+    const { rows } = (await pool.query(sql, [owner_id])) as pg.QueryResult<any>;
 
-  return rows[0];
+    return rows[0];
+  } catch (error) {
+    throw new Error(`Error getting account: ${error}`);
+  }
 }
 
 /* adding FOR NO KEY UPDATE ensures that the selected row is locked with a weaker lock, 
@@ -34,39 +36,70 @@ This can be useful in situations where you want to ensure that only one
 transaction is modifying a specific row at a time. */
 
 const getAccountForUpdate = async (id: number) => {
-  const sql = `SELECT id, user, balance, currency, created_at FROM accounts
+  const sql = `SELECT id, owner_id, balance, currency, created_at FROM accounts
       WHERE id = $1 LIMIT 1
       FOR NO KEY UPDATE`;
 
-  const { rows } = (await pool.query(sql, [id])) as pg.QueryResult<any>;
-  return rows[0];
+  try {
+    const { rows } = (await pool.query(sql, [id])) as pg.QueryResult<any>;
+    return rows[0];
+  } catch (error) {
+    throw new Error(`Error getting account: ${error}`);
+  }
 };
 
-const updateBalance = async (userid: number, amount: number) => {
-  const sql = `UPDATE accounts 
-    SET balance = balance + $1
-    WHERE user = $2
-    RETURNING *
-    `;
-  const { rows } = (await pool.query(sql, [
-    userid,
-    amount,
-  ])) as pg.QueryResult<any>;
-
-  return rows[0];
-};
-
-const updateAccount = (id: number, balance: number) => {
+const updateAccount = async (id: number, balance: number) => {
   const sql = `UPDATE accounts SET balance = $2
     WHERE id = $1
-    RETURNING id, owner, balance, currency, created_at
+    RETURNING id, owner_id, balance, currency, created_at
     `;
-  const { rows } = (await pool.query(sql, [
-    id,
-    balance,
-  ])) as pg.QueryResult<any>;
 
+  try {
+    const { rows } = (await pool.query(sql, [
+      id,
+      balance,
+    ])) as pg.QueryResult<any>;
+
+    return rows[0];
+  } catch (error) {
+    throw new Error(`Error updating account: ${error}`);
+  }
+};
+
+const addAccountBalance = async (owner_id: number, amount: number) => {
+  const sql = `UPDATE accounts 
+      SET balance = balance + $1
+      WHERE owner_id = $2
+      RETURNING *
+      `;
+
+  try {
+    const { rows } = (await pool.query(sql, [
+      owner_id,
+      amount,
+    ])) as pg.QueryResult<any>;
+
+    return rows[0];
+  } catch (error) {
+    throw new Error(`Error adding account balance: ${error}`);
+  }
+};
+
+const deleteAccount = async (owner_id: number) => {
+  const sql = `DELETE FROM accounts WHERE owner_id = $1 RETURNING *`;
+
+  const { rows } = (await pool.query(sql, [owner_id])) as pg.QueryResult<any>;
+  if (rows.length === 0) {
+    throw new Error(`No account found with owner_id ${owner_id}`);
+  }
   return rows[0];
 };
 
-export { createAccount, getAccount, getAccountForUpdate, updateBalance };
+export {
+  createAccount,
+  getAccount,
+  getAccountForUpdate,
+  addAccountBalance,
+  updateAccount,
+  deleteAccount,
+};

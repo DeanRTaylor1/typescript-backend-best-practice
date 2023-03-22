@@ -6,9 +6,8 @@ import express from "express";
 import { BadRequestError } from "@src/errors";
 import { getUser } from "@src/db/sql/user.sql";
 import { convertToUserResponse } from "@src/db/models/user";
+import { Password, createToken } from "@src/util";
 
-import { Password } from "@src/util/password";
-import { createToken } from "@src/util/paseto";
 const router = express.Router();
 
 router.post(

@@ -1,26 +1,28 @@
+import { currency } from "@src/types/currency";
+
 export type dbAccount = {
   id: number;
-  user: number;
-  currency: string;
-  balance: number;
+  owner_id: number;
+  currency: currency;
+  balance: bigint;
   created_at: Date;
 };
 
 export type accountResponse = {
-  user: number;
-  currency: string;
-  balance: number;
+  owner_id: number;
+  currency: currency;
+  balance: bigint;
   created_at: Date;
 };
 
 export type createAccountParams = {
-  user: number;
+  owner_id: number;
   currency: string;
 };
 
 const convertToaccountResponse = (account: dbAccount): accountResponse => {
   const res: accountResponse = {
-    user: account.user,
+    owner_id: account.owner_id,
     currency: account.currency,
     balance: account.balance,
     created_at: account.created_at,

@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+/**
+ * @fileoverview Provides functions for creating and verifying PASETO tokens.
+ * @module auth/paseto
+ */
+
 import { V3 } from "paseto";
 
 export type payload = {
+  id: number;
   username: string;
   email: string;
   issued_at: number;

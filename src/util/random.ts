@@ -1,4 +1,6 @@
-import { createUserParams } from "@src/db/sql/user.sql";
+import { createAccountParams, dbAccount } from "@src/db/models/account";
+import { createAccount } from "@src/db/sql/account.sql";
+import { createUser, createUserParams } from "@src/db/sql/user.sql";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -31,4 +33,26 @@ function generateUser(): createUserParams {
   return user;
 }
 
-export { generateEmail, generateUser, generateString };
+function generateCreateAccountParams(id: number): createAccountParams {
+  const createAccountParams = {
+    owner_id: id,
+    currency: "USD",
+  };
+  return createAccountParams;
+}
+
+async function createRandomAccount(): Promise<dbAccount> {
+  const user = generateUser();
+  const pgUser = await createUser(user);
+  const accountParams = generateCreateAccountParams(pgUser.id);
+  const pgAccount = await createAccount(accountParams);
+  return pgAccount;
+}
+
+export {
+  generateEmail,
+  generateUser,
+  generateString,
+  generateCreateAccountParams,
+  createRandomAccount,
+};
