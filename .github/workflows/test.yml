@@ -42,3 +42,7 @@ jobs:
         run: npm run migrate-up
       - name: test
         run: npm run test-ci
+      - name: Jest Coverage Report
+        uses: ziishaned/jest-reporter-action@v0.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
