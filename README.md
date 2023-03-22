@@ -1,4 +1,4 @@
-[![ci-test](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml/badge.svg?event=release)](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml)
+[![ci-test](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DeanRTaylor1/typescript-backend-best-practice/actions/workflows/test.yml)
 [![Coverage Status](./icons/badge-statements.svg)](./coverage/index.html)
 [![Coverage Status](./icons/badge-lines.svg)](./coverage/index.html)
 [![Coverage Status](./icons/badge-functions.svg)](./coverage/index.html)
