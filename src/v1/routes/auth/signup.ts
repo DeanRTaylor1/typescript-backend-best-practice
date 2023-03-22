@@ -8,6 +8,8 @@ import { createUser, createUserParams } from "@src/db/sql/user.sql";
 import { convertToUserResponse, dbUser } from "@src/db/models/user";
 
 import { Password } from "@src/util";
+import { createAccount } from "@src/db/sql/account.sql";
+import { currency } from "@src/types/currency";
 const router = express.Router();
 
 // Define a route for signing up
@@ -60,7 +62,11 @@ router.post(
     try {
       // Create the new user
       newUser = (await createUser(newUser)) as dbUser;
-
+      const account = await createAccount({
+        owner_id: newUser.id,
+        currency: currency.USD,
+      });
+      console.log(account);
       // Return the user as a response
       res.status(201).send(convertToUserResponse(newUser));
     } catch (err) {

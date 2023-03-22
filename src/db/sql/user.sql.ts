@@ -18,7 +18,6 @@ async function createUser(arg: createUserParams) {
 
     return rows[0];
   } catch (error) {
-    console.log(error);
     throw new Error(`Error creating user: ${error}`);
   }
 }

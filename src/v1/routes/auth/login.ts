@@ -52,7 +52,7 @@ router.post(
       15
     );
 
-    res.status(201).send({ access_token, user: convertToUserResponse(user) });
+    res.status(200).send({ access_token, user: convertToUserResponse(user) });
   }
 );
 
