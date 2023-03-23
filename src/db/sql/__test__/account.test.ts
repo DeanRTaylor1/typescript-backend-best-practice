@@ -1,17 +1,13 @@
 import {
-  generateUser,
   generateCreateAccountParams,
   createRandomAccount,
 } from "../../../util";
 import { createAccountParams, dbAccount } from "../../models/account";
-import { dbUser } from "../../models/user";
 import { createAccount, deleteAccount, getAccount } from "../account.sql";
-import { createUser } from "../user.sql";
+import { generateDbUser } from "../../../util/generate-db-user";
 
 it("should create an account successfully with the correct parameters", async () => {
-  const user = generateUser();
-
-  const pgUser: dbUser = await createUser(user);
+  const pgUser = await generateDbUser();
 
   const accountParams: createAccountParams = {
     owner_id: pgUser.id,
@@ -26,9 +22,7 @@ it("should create an account successfully with the correct parameters", async ()
 });
 
 it("throws an error if user already has an account", async () => {
-  const user = generateUser();
-
-  const pgUser: dbUser = await createUser(user);
+  const pgUser = await generateDbUser();
 
   const accountParams: createAccountParams = {
     owner_id: pgUser.id,
@@ -39,9 +33,7 @@ it("throws an error if user already has an account", async () => {
 });
 
 it("finds the account if given correct paramaters", async () => {
-  const user = generateUser();
-
-  const pgUser: dbUser = await createUser(user);
+  const pgUser = await generateDbUser();
 
   const accountParams = generateCreateAccountParams(pgUser.id);
   const account1 = await createAccount(accountParams);

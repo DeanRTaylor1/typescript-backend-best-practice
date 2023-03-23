@@ -7,7 +7,7 @@ import { validateRequest } from "../../../middleware/validate-request";
 import { BadRequestError } from "../../../errors";
 import { Password } from "../../../util";
 import { convertToUserResponse, dbUser } from "../../../db/models/user";
-import { createAccount, createUser, createUserParams } from "../../../db/sql";
+import { createAccount, createUser } from "../../../db/sql";
 import { currency } from "../../../types/currency";
 
 const router = express.Router();
@@ -52,16 +52,21 @@ router.post(
     const hashed_password = await Password.toHash(password);
 
     // Define the new user object
-    let newUser: createUserParams | dbUser = {
-      email,
-      hashed_password,
-      username,
-      full_name,
-    };
+    // let newUser: createUserParams | dbUser = {
+    //   email,
+    //   hashed_password,
+    //   username,
+    //   full_name,
+    // };
 
     try {
       // Create the new user
-      newUser = (await createUser(newUser)) as dbUser;
+      const newUser = (await createUser(
+        email,
+        hashed_password,
+        username,
+        full_name
+      )) as dbUser;
       const account = await createAccount({
         owner_id: newUser.id,
         currency: currency.USD,

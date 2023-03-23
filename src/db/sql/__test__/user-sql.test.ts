@@ -1,11 +1,16 @@
 import { generateUser } from "../../../util";
 import { dbUser } from "../../models/user";
-import { createUser, getUser } from "../user.sql";
+import { createUser, createUserParams, getUser } from "../user.sql";
 
 it("should create a user successfully with the correct parameters", async () => {
-  const user = generateUser();
+  const user = generateUser() as createUserParams;
 
-  const pgUser: dbUser = await createUser(user);
+  const pgUser: dbUser = await createUser(
+    user.email,
+    user.hashed_password,
+    user.username,
+    user.full_name
+  );
 
   expect(pgUser.email).toEqual(user.email);
   expect(pgUser.full_name).toEqual(user.full_name);
@@ -14,9 +19,14 @@ it("should create a user successfully with the correct parameters", async () => 
 });
 
 it("should return a user with the correct paramaters if the user exists", async () => {
-  const user = generateUser();
+  const user = generateUser() as createUserParams;
 
-  const pgUser: dbUser = await createUser(user);
+  const pgUser: dbUser = await createUser(
+    user.email,
+    user.hashed_password,
+    user.username,
+    user.full_name
+  );
 
   expect(pgUser.email).toEqual(user.email);
   expect(pgUser.full_name).toEqual(user.full_name);

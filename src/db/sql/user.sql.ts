@@ -9,11 +9,16 @@ export type createUserParams = {
   full_name: string;
 };
 
-async function createUser(arg: createUserParams) {
+async function createUser(
+  email: string,
+  hashed_password: string,
+  username: string,
+  full_name: string
+) {
   try {
     const { rows } = (await pool.query(
       `INSERT INTO users (email, hashed_password, username, full_name) VALUES ($1, $2, $3, $4) RETURNING *`,
-      [arg.email, arg.hashed_password, arg.username, arg.full_name]
+      [email, hashed_password, username, full_name]
     )) as pg.QueryResult<any>;
 
     return rows[0];
