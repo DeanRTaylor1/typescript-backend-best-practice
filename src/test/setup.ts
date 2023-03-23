@@ -1,4 +1,4 @@
-import pool from "@src/db/pool";
+import pool from "../db/pool";
 
 beforeAll(async () => {
   // TODO - add database connection and env variable setup

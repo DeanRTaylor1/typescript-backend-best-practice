@@ -1,6 +1,6 @@
-import { app } from "@src/app";
-import { generateEmail, generateString } from "@src/util";
 import request from "supertest";
+import { app } from "../../../../app";
+import { generateEmail, generateString } from "../../../../util";
 
 it("returns 200 if given correct credentials", async () => {
   const email = generateEmail();

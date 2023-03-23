@@ -1,6 +1,6 @@
-import { generateEmail, generateString } from "@src/util/random";
 import request from "supertest";
 import { app } from "../../../../app";
+import { generateEmail, generateString } from "../../../../util";
 
 it("returns a 201 on successful signup", async () => {
   return request(app)

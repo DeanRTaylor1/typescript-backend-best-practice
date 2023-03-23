@@ -1,6 +1,5 @@
-import { createAccountParams, dbAccount } from "@src/db/models/account";
-import { createAccount } from "@src/db/sql/account.sql";
-import { createUser, createUserParams } from "@src/db/sql/user.sql";
+import { createAccountParams, dbAccount } from "../db/models/account";
+import { createUserParams, createUser, createAccount } from "../db/sql";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 

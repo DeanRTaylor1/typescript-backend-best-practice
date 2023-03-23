@@ -1,4 +1,4 @@
-import { currency } from "@src/types/currency";
+import { currency } from "../../types/currency";
 
 export type dbAccount = {
   id: number;

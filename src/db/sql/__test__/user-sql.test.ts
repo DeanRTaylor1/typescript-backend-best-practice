@@ -1,5 +1,5 @@
-import { dbUser } from "@src/db/models/user";
-import { generateUser } from "@src/util";
+import { generateUser } from "../../../util";
+import { dbUser } from "../../models/user";
 import { createUser, getUser } from "../user.sql";
 
 it("should create a user successfully with the correct parameters", async () => {
