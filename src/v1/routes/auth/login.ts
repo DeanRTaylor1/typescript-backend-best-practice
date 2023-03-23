@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Request, Response } from "express";
 
 import { body } from "express-validator";
@@ -46,12 +47,24 @@ router.post(
       throw new BadRequestError("Unable to log in.");
     }
 
-    const access_token = await createToken(
+    const { token: access_token } = await createToken(
       user.id,
       user.username,
       user.email,
-      15
+      +process.env.ACCESS_TOKEN_DURATION!
     );
+    if (!access_token) {
+      throw new BadRequestError("Unable to log in, please try again later.");
+    }
+    const { token: refresh_token, payload } = await createToken(
+      user.id,
+      user.username,
+      user.email,
+      +process.env.REFRESH_TOKEN_DURATION!
+    );
+    if (!refresh_token) {
+      throw new BadRequestError("Unable to log in, please try again later.");
+    }
 
     res.status(200).send({ access_token, user: convertToUserResponse(user) });
   }

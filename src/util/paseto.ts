@@ -22,9 +22,13 @@ export async function createToken(
 ) {
   const payload = newPayload(id, email, username, duration * 60000);
 
-  const token = await V3.encrypt(payload, process.env.PASETO_KEY!);
+  try {
+    const token = await V3.encrypt(payload, process.env.PASETO_KEY!);
 
-  return token;
+    return { token, payload };
+  } catch (error) {
+    throw new Error(`Error creating token: ${error}`);
+  }
 }
 
 export async function verifyToken(token: string) {
