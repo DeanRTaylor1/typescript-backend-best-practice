@@ -1,12 +1,13 @@
-import { validateRequest } from "@src/middleware/validate-request";
 import { Request, Response } from "express";
-import { apiRoutes } from "@src/types/api-routes";
+
 import { body } from "express-validator";
 import express from "express";
-import { BadRequestError } from "@src/errors";
-import { getUser } from "@src/db/sql/user.sql";
-import { convertToUserResponse } from "@src/db/models/user";
-import { Password, createToken } from "@src/util";
+import { apiRoutes } from "../../../types/api-routes";
+import { validateRequest } from "../../../middleware/validate-request";
+import { BadRequestError } from "../../../errors";
+import { getUser } from "../../../db/sql";
+import { createToken, Password } from "../../../util";
+import { convertToUserResponse } from "../../../db/models/user";
 
 const router = express.Router();
 

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { BadRequestError } from "@src/errors";
-import { payload, verifyToken } from "@src/util/paseto";
+
 import { Request, Response, NextFunction } from "express";
 import { NotAuthorizedError } from "../errors/not-authorized-error";
+import { payload, verifyToken } from "../util";
 
 declare global {
   //augment global interface Request

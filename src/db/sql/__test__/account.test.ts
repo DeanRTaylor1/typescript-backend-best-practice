@@ -1,10 +1,10 @@
-import { createAccountParams, dbAccount } from "@src/db/models/account";
-import { dbUser } from "@src/db/models/user";
 import {
-  createRandomAccount,
-  generateCreateAccountParams,
   generateUser,
-} from "@src/util";
+  generateCreateAccountParams,
+  createRandomAccount,
+} from "../../../util";
+import { createAccountParams, dbAccount } from "../../models/account";
+import { dbUser } from "../../models/user";
 import { createAccount, deleteAccount, getAccount } from "../account.sql";
 import { createUser } from "../user.sql";
 

@@ -1,6 +1,6 @@
 import { currentUser } from "../current-user";
 import { NotAuthorizedError } from "../../errors/not-authorized-error";
-import { payload, verifyToken } from "@src/util/paseto";
+import { payload, verifyToken } from "../../util";
 
 jest.mock("@src/util/paseto", () => ({
   verifyToken: jest.fn(),

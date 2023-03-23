@@ -1,15 +1,15 @@
-import { validateRequest } from "@src/middleware/validate-request";
 import { Request, Response } from "express";
-import { apiRoutes } from "@src/types/api-routes";
+
 import { body } from "express-validator";
 import express from "express";
-import { BadRequestError } from "@src/errors";
-import { createUser, createUserParams } from "@src/db/sql/user.sql";
-import { convertToUserResponse, dbUser } from "@src/db/models/user";
+import { apiRoutes } from "../../../types/api-routes";
+import { validateRequest } from "../../../middleware/validate-request";
+import { BadRequestError } from "../../../errors";
+import { Password } from "../../../util";
+import { convertToUserResponse, dbUser } from "../../../db/models/user";
+import { createAccount, createUser, createUserParams } from "../../../db/sql";
+import { currency } from "../../../types/currency";
 
-import { Password } from "@src/util";
-import { createAccount } from "@src/db/sql/account.sql";
-import { currency } from "@src/types/currency";
 const router = express.Router();
 
 // Define a route for signing up
