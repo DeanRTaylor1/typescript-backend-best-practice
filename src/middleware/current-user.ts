@@ -20,7 +20,7 @@ export const currentUser = async (
 ) => {
   //console.log(req.currentUser, req.headers, req.session)
   const authType = req.headers.authorization;
-  console.log(authType);
+
   if (!authType) {
     throw new NotAuthorizedError();
   }

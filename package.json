@@ -13,12 +13,12 @@
     "postgres:stop": "docker stop postgres14",
     "create-migration": "node ./scripts/create-migration.js",
     "migrate-up": "db-migrate up --config ./db/database.json --migrations-dir ./db/migrations",
-    "migrate-down": "db-migrate down --config ./db/database.json --migrations-dir ./db/migrations",
+    "migrate-down": "db-migrate down --count 999 --config ./db/database.json --migrations-dir ./db/migrations",
     "migrate-up1": "db-migrate up --count 1 --config ./db/database.json --migrations-dir ./db/migrations",
     "migrate-down1": "db-migrate down --count 1 --config ./db/database.json --migrations-dir ./db/migrations",
     "test-ci": "jest --coverage",
     "lint": "npx eslint . --ext .ts --fix",
-    "coverage-badges": "jest-coverage-badges",
+    "coverage-badges": "jest-coverage-badges --output ./icons",
     "cleanup": "db-migrate down --config ./db/database.json --migrations-dir ./db/migrations && docker kill postgres14 && docker rm postgres14"
   },
   "jest": {

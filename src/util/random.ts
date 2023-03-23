@@ -1,5 +1,6 @@
 import { createAccountParams, dbAccount } from "../db/models/account";
-import { createUserParams, createUser, createAccount } from "../db/sql";
+import { createUserParams, createAccount } from "../db/sql";
+import { generateDbUser } from "./generate-db-user";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -21,6 +22,7 @@ function generateString() {
   return `${user}`;
 }
 
+//utility function to generate a random user to be added to the database
 function generateUser(): createUserParams {
   const user: createUserParams = {
     email: generateEmail(),
@@ -41,8 +43,7 @@ function generateCreateAccountParams(id: number): createAccountParams {
 }
 
 async function createRandomAccount(): Promise<dbAccount> {
-  const user = generateUser();
-  const pgUser = await createUser(user);
+  const pgUser = await generateDbUser();
   const accountParams = generateCreateAccountParams(pgUser.id);
   const pgAccount = await createAccount(accountParams);
   return pgAccount;
