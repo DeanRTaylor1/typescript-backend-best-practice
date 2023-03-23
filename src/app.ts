@@ -12,6 +12,7 @@ import { v1SignupRouter } from "./v1/routes/auth/signup";
 import { v1LoginRouter } from "./v1/routes/auth/login";
 import { currentUser } from "./middleware/current-user";
 import { requireAuth } from "./middleware/require-authentication";
+import { v1AccountRouter } from "./v1/routes/account";
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config();
@@ -48,8 +49,14 @@ if (process.env.NODE_ENV !== "test") {
 
 app.use(v1SignupRouter);
 app.use(v1LoginRouter);
+
+//All routes below this line require authentication
+
 app.use(currentUser);
 app.use(requireAuth);
+
+/* ---------------------------------- */
+app.use(v1AccountRouter);
 
 //not found 404
 app.all("*", async (req: Request, res: Response) => {
