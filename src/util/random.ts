@@ -22,6 +22,7 @@ function generateString() {
   return `${user}`;
 }
 
+//utility function to generate a random user to be added to the database
 function generateUser(): createUserParams {
   const user: createUserParams = {
     email: generateEmail(),
