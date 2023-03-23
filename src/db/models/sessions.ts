@@ -1,5 +1,5 @@
 export type dbSession = {
-  id: number;
+  id: string;
   email: string;
   refresh_token: string;
   user_agent: string;
@@ -10,7 +10,7 @@ export type dbSession = {
 };
 
 export type userSession = {
-  id: number;
+  id: string;
   refresh_token: string;
   email: string;
   expires_at: Date;

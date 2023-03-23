@@ -26,7 +26,7 @@ export const currentUser = async (
   }
 
   const fields = authType.split(" ");
-  console.log(fields);
+
   if (fields.length < 2) {
     throw new NotAuthorizedError();
   }
@@ -36,12 +36,15 @@ export const currentUser = async (
   }
 
   const access_token = fields[1];
-
-  const payload = await verifyToken(access_token);
-  console.log(payload);
-  if (!payload) {
+  try {
+    const payload = await verifyToken(access_token);
+    console.log(payload);
+    if (!payload) {
+      throw new NotAuthorizedError();
+    }
+    req.currentUser = payload;
+    next();
+  } catch (err) {
     throw new NotAuthorizedError();
   }
-  req.currentUser = payload;
-  next();
 };

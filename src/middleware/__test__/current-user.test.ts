@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { currentUser } from "../current-user";
 import { NotAuthorizedError } from "../../errors/not-authorized-error";
 import { payload, verifyToken } from "../../util";
@@ -33,7 +34,8 @@ describe("currentUser middleware", () => {
     const mockReq = mockRequest();
     const mockRes = mockResponse();
     const mockPayload: payload = {
-      id: 1,
+      id: "afwww",
+      user_id: 2,
       username: "123",
       email: "test@example.com",
       issued_at: 123,
@@ -76,9 +78,6 @@ describe("currentUser middleware", () => {
     const mockReq = mockRequest();
     const mockRes = mockResponse();
     const mockNext = jest.fn();
-    (verifyToken as jest.MockedFunction<typeof verifyToken>).mockResolvedValue(
-      ""
-    );
 
     await expect(currentUser(mockReq, mockRes, mockNext)).rejects.toThrow(
       NotAuthorizedError
