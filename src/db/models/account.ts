@@ -20,7 +20,7 @@ export type createAccountParams = {
   currency: string;
 };
 
-const convertToaccountResponse = (account: dbAccount): accountResponse => {
+const convertToAccountResponse = (account: dbAccount): accountResponse => {
   const res: accountResponse = {
     owner_id: account.owner_id,
     currency: account.currency,
@@ -30,4 +30,4 @@ const convertToaccountResponse = (account: dbAccount): accountResponse => {
   return res;
 };
 
-export { convertToaccountResponse };
+export { convertToAccountResponse };

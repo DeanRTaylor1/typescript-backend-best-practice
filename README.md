@@ -10,6 +10,7 @@
 
 - Clone repo
 - npm install
+- create .env with below parameters
 - npm run postgres setup docker container with postgres
 - npm run createdb createdb with required name
 - npm run migrate-up
@@ -17,6 +18,19 @@
 - npm run test-ci will complete one test run and output coverage details
 
 ### Must have Docker Daemon installed and running to get db set up
+
+## Environment Variables
+
+The following environment variables are required to run the project:
+
+- `PG_HOST`: The hostname or IP address of the PostgreSQL server (default is `localhost`).
+- `PG_USERNAME`: The username for the PostgreSQL server (default is `root`).
+- `PG_PASSWORD`: The password for the PostgreSQL server (default is `secret`).
+- `PASETO_KEY`: The secret key used for PASETO encryption (default is `12345678901234567890123456789012`).
+- `ACCESS_TOKEN_DURATION`: The duration of the access token in minutes (default is `15`).
+- `REFRESH_TOKEN_DURATION`: The duration of the refresh token in minutes (default is `2880`).
+
+To set up these environment variables, create a `.env` file in the root directory of the project, and add the following lines:
 
 ## Features
 

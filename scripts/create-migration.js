@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { exec } = require("child_process");
 
 (() => {
@@ -11,6 +13,6 @@ const { exec } = require("child_process");
         return;
       }
       console.log(stdout);
-    },
+    }
   );
 })();
