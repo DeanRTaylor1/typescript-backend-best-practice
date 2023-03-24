@@ -26,6 +26,7 @@ describe("Accounts get route", () => {
     const result = await request(app).post("/api/v1/auth/login").send(user);
 
     const { access_token } = result.body;
+    console.log("access token: " + access_token);
 
     await request(app)
       .get(`/api/v1/account`)

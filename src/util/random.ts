@@ -1,6 +1,7 @@
 import { createAccountParams, dbAccount } from "../db/models/account";
 import { createUserParams, createAccount } from "../db/sql";
 import { generateDbUser } from "./generate-db-user";
+import uniqid from "uniqid";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -49,7 +50,20 @@ async function createRandomAccount(): Promise<dbAccount> {
   return pgAccount;
 }
 
+function generateSession(email: string) {
+  const session = {
+    id: uniqid(),
+    email,
+    refresh_token: generateString(),
+    user_agent: generateString(),
+    client_ip: generateString(),
+    expires_at: new Date(),
+  };
+  return session;
+}
+
 export {
+  generateSession,
   generateEmail,
   generateUser,
   generateString,

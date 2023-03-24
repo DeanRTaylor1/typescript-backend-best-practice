@@ -14,7 +14,7 @@ it("should create an account successfully with the correct parameters", async ()
     currency: "USD",
   };
   const account = (await createAccount(accountParams)) as unknown as dbAccount;
-  console.log(account);
+  // console.log(account);
   expect(account).toBeTruthy();
   expect(account.owner_id).toEqual(pgUser.id);
   expect(account.currency).toEqual(accountParams.currency);

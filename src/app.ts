@@ -13,6 +13,7 @@ import { v1LoginRouter } from "./v1/routes/auth/login";
 import { currentUser } from "./middleware/current-user";
 import { requireAuth } from "./middleware/require-authentication";
 import { v1AccountRouter } from "./v1/routes/account";
+import { v1RefreshAccessTokenRouter } from "./v1/routes/auth/renew-access-token";
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config();
@@ -57,7 +58,7 @@ app.use(requireAuth);
 
 /* ---------------------------------- */
 app.use(v1AccountRouter);
-
+app.use(v1RefreshAccessTokenRouter);
 //not found 404
 app.all("*", async (req: Request, res: Response) => {
   throw new NotFoundError();

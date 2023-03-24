@@ -3,11 +3,13 @@
  * @fileoverview Provides functions for creating and verifying PASETO tokens.
  * @module auth/paseto
  */
-
+import uniqid from "uniqid";
 import { V3 } from "paseto";
+import { NotAuthorizedError } from "../errors";
 
 export type payload = {
-  id: number;
+  id: string;
+  user_id: number;
   username: string;
   email: string;
   issued_at: number;
@@ -15,16 +17,20 @@ export type payload = {
 };
 
 export async function createToken(
-  id: number,
+  user_id: number,
   username: string,
   email: string,
   duration: number
 ) {
-  const payload = newPayload(id, email, username, duration * 60000);
+  const payload = newPayload(user_id, email, username, duration * 60000);
 
-  const token = await V3.encrypt(payload, process.env.PASETO_KEY!);
+  try {
+    const token = await V3.encrypt(payload, process.env.PASETO_KEY!);
 
-  return token;
+    return { token, payload };
+  } catch (error) {
+    throw new Error(`Error creating token: ${error}`);
+  }
 }
 
 export async function verifyToken(token: string) {
@@ -36,23 +42,24 @@ export async function verifyToken(token: string) {
 
     const valid = isValid(payload);
     if (!valid) {
-      return "";
+      throw new Error("Token is not valid");
     }
 
     return payload;
   } catch (err) {
-    return "";
+    throw new NotAuthorizedError();
   }
 }
 
 function newPayload(
-  id: number,
-  username: string,
+  user_id: number,
   email: string,
+  username: string,
   duration: number
 ): payload {
   const payload = {
-    id,
+    id: uniqid(),
+    user_id,
     username,
     email,
     issued_at: new Date().getTime(),

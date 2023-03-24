@@ -3,6 +3,8 @@ import pool from "../db/pool";
 beforeAll(async () => {
   // TODO - add database connection and env variable setup
   process.env.PASETO_KEY = "12345678901234567890123456789012";
+  process.env.ACCESS_TOKEN_DURATION = "15";
+  process.env.REFRESH_TOKEN_DURATION = "1440";
   try {
     pool.connect({
       host: "localhost",

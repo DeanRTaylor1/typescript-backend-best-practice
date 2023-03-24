@@ -12,11 +12,13 @@ const PORT = process.env.PORT || 8080;
     !process.env.PG_HOST ||
     !process.env.PG_USERNAME ||
     !process.env.PG_PASSWORD ||
-    !process.env.PASETO_KEY
+    !process.env.PASETO_KEY ||
+    !process.env.ACCESS_TOKEN_DURATION ||
+    !process.env.REFRESH_TOKEN_DURATION
   ) {
     console.log(
       colors.FgRed,
-      "Missing environment variables! Please check your .env file."
+      "Missing environment variables! Please check your .env file, more information in Readme.md."
     );
     console.log(colors.Reset, "");
     process.exit(1);
