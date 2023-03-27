@@ -14,7 +14,10 @@ router.post(
   `${apiRoutes.v1Auth}/renew`,
   async (req: Request, res: Response) => {
     try {
+      // Get refresh token from request body
+
       const refresh_token = req.body.refresh_token;
+      // Verify refresh token
 
       const payload = await verifyToken(refresh_token);
 

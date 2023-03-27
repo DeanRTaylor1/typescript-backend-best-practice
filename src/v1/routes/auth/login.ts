@@ -14,9 +14,13 @@ import { createSession } from "../../../db/sql/session.sql";
 
 const router = express.Router();
 
+// This route handles POST requests to /api/v1/auth/login
+
 router.post(
   `${apiRoutes.v1Auth}/login`,
   [
+    // These are the validation rules for the request body
+
     body("email")
       .not()
       .isEmpty()
@@ -37,13 +41,18 @@ router.post(
     }
 
     try {
+      // Get the user with the given email address
+      //Throws an error if the user does not exist
       const user = await getUser(email);
 
+      // Compare the given password with the user's hashed password
       const result = await Password.compare(user.hashed_password, password);
 
       if (!result) {
         throw new BadRequestError("Invalid credentials");
       }
+
+      // Create an access token and a refresh token for the user
 
       const { token: access_token, payload: access_token_payload } =
         await createToken(
@@ -61,6 +70,8 @@ router.post(
           +process.env.REFRESH_TOKEN_DURATION!
         );
 
+      // Create a new session in the database for the user
+
       const dbSession: dbSession = await createSession(
         refresh_payload.id,
         user.email,
@@ -69,6 +80,8 @@ router.post(
         req.ip,
         new Date(refresh_payload.expires_at)
       );
+
+      // Send the access token and refresh token to the client
 
       res.status(200).send({
         session_id: dbSession.id,

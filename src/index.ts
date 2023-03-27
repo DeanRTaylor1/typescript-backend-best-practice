@@ -6,7 +6,7 @@ import pool from "./db/pool";
 const PORT = process.env.PORT || 8080;
 
 // start the Express server and do initial setup here
-// TODO - add database connection and env variable setup
+
 (async () => {
   if (
     !process.env.PG_HOST ||

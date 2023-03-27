@@ -39,6 +39,33 @@ To set up these environment variables, create a `.env` file in the root director
 3. Create new db migration by using npm run create-migration -- migration-name
 4. PASETO Bearer authentication
 
+
+## Naming Conventions
+
+- Use camelCase for internal functions and variables.
+- Use snake_case for client-facing data such as variables to be sent in JSON.
+
+## Examples
+
+Here are some examples of how to use these naming conventions:
+
+```javascript
+// Internal function
+function myFunction() {
+  // ...
+}
+
+// Internal variable
+let myVariable = "Hello, world!";
+
+// Client-facing data
+let clientData = {
+  first_name: "John",
+  last_name: "Doe",
+  age: 30
+}:
+'''
+
 ## Available Scripts
 
 In the project directory, you can run:
