@@ -39,7 +39,6 @@ To set up these environment variables, create a `.env` file in the root director
 3. Create new db migration by using npm run create-migration -- migration-name
 4. PASETO Bearer authentication
 
-
 ## Naming Conventions
 
 - Use camelCase for internal functions and variables.
@@ -121,3 +120,4 @@ Migrates the database schema down by one step only using `db-migrate`.
 ### `npm run test-ci`
 
 Runs tests in CI mode with code coverage enabled using `jest`.
+```
