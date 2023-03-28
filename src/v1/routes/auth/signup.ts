@@ -1,3 +1,21 @@
+/**
+ * @api {post} /v1/auth/signup Signup
+ * @apiName Signup
+ * @apiGroup Authentication
+ *
+ * @apiParam {String} email User's email address.
+ * @apiParam {String} password User's password.
+ * @apiParam {String} username User's username.
+ * @apiParam {String} full_name User's full name.
+ *
+ * @apiSuccess {Object} user User object containing user details.
+ * @apiSuccess {String} user.email User's email address.
+ * @apiSuccess {String} user.username User's username.
+ * @apiSuccess {String} user.full_name User's full name.
+ *
+ * @apiError (400 Bad Request) MissingParameters One or more required parameters are missing.
+ */
+
 import { Request, Response } from "express";
 
 import { body } from "express-validator";
@@ -47,17 +65,8 @@ router.post(
       // Throw an error if any parameter is missing
       throw new BadRequestError("missing parameters");
     }
-
     // Hash the password
     const hashed_password = await Password.toHash(password);
-
-    // Define the new user object
-    // let newUser: createUserParams | dbUser = {
-    //   email,
-    //   hashed_password,
-    //   username,
-    //   full_name,
-    // };
 
     try {
       // Create the new user

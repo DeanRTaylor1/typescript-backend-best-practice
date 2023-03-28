@@ -1,3 +1,17 @@
+/**
+ * @api {post} /v1/auth/renew Renew Access Token
+ * @apiName RenewAccessToken
+ * @apiGroup Authentication
+ *
+ * @apiParam {String} refresh_token User's refresh token.
+ *
+ * @apiSuccess {Object} data Object containing access token and expiry time.
+ * @apiSuccess {String} data.access_token User's new access token.
+ * @apiSuccess {String} data.access_token_expires_at Expiry time of the access token in local time.
+ *
+ * @apiError (401 Unauthorized) NotAuthorizedError User is not authorized to access this route.
+ */
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Request, Response } from "express";
 

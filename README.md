@@ -35,9 +35,9 @@ To set up these environment variables, create a `.env` file in the root director
 ## Features
 
 1. Custom logging using morgan, Influenced by Gin Go framework
-2. Custom Error handling
+2. Custom Error handling classes
 3. Create new db migration by using npm run create-migration -- migration-name
-4. PASETO Bearer authentication
+4. PASETO Bearer authentication and refresh token
 
 ## Naming Conventions
 

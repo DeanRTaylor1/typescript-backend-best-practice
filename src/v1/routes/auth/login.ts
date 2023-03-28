@@ -1,3 +1,24 @@
+/**
+
+@api {post} /api/v1/auth/login Login User
+@apiName LoginUser
+@apiGroup Authentication
+@apiParam {String} email User's email address.
+@apiParam {String} password User's password.
+@apiSuccess {Object} data Object containing access token, refresh token, session id, and user data.
+@apiSuccess {Number} data.session_id User's session id.
+@apiSuccess {String} data.access_token User's access token.
+@apiSuccess {String} data.access_token_expires_at Expiry time of the access token in local time.
+@apiSuccess {String} data.refresh_token User's refresh token.
+@apiSuccess {String} data.refresh_token_expires_at Expiry time of the refresh token in local time.
+@apiSuccess {Object} data.user User's information.
+@apiSuccess {String} data.user.id User's id.
+@apiSuccess {String} data.user.username User's username.
+@apiSuccess {String} data.user.email User's email address.
+@apiError (400 Bad Request) BadRequestError Missing or invalid email or password.
+@apiError (400 Bad Request) BadRequestError Invalid credentials.
+*/
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Request, Response } from "express";
 
