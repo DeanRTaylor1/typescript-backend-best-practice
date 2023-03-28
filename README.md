@@ -63,7 +63,7 @@ let clientData = {
   last_name: "Doe",
   age: 30
 }:
-'''
+```
 
 ## Available Scripts
 
@@ -120,4 +120,7 @@ Migrates the database schema down by one step only using `db-migrate`.
 ### `npm run test-ci`
 
 Runs tests in CI mode with code coverage enabled using `jest`.
+
+```
+
 ```
