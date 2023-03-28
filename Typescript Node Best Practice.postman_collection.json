@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "e3a91aa0-e7b9-45b7-8f0c-5990ee5ea9d4",
+		"name": "Typescript Node Best Practice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23713607"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test1@test.com\",\r\n    \"password\": \"password\",\r\n    \"username\": \"test\",\r\n    \"full_name\": \"testman\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"test1@test.com\",\r\n    \"password\": \"password\",\r\n    \"username\": \"test\",\r\n    \"full_name\": \"testman\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "v3.local.lCpIEYGkRkTfmPy011xdUALp-mVHJt2Z_rIZnGHlSz3eEqpIN5RMmAGWejoJMKxSZSc3brdDcjHOx0bO25vCBCm9je6np1XwOc_78i5Xmad9XnCSH_nx4Cqc0p-oIrZKL-jAyIligUMxklCvnQRfL-tu1pNAH7ll8sZmLuCgeNBvPGwpejOVvwgrtLO5XoBcOzJmMwYf7YSzxbJ7_76bAjoXHg7Yt0udMlo5OlriD_vUuwBT0fQe5YnReLX_tnklsuj58eIv7MbNsrb409fYH6szfckOdY5nT4K330_kFV-3ts3ErwxP2_cTiilnhhuzZ6kbAmLpVjc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Renew Access Token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "v3.local.3aMqPV7U8sfxF-f81RaiGIu077YvkolM-QGsfC96tG_exf6JA6t6x2TyDuCc5P7Pii6eUy2CmqAIREZzuJ13S-p7Lu-NzHXw-WBryyYc6xuipJZQ-5FYFkB-dMq4--kfPQsY1zBuTmCGGEm8X6DzLta2lBvjmqIS8GEraSUjxu3Axk8floKTLoel0cEuWFUsyREM69X3PIUPk1AYWoSDrjdSYaFF5YKPmR4H_tSpinNgrYWsetiZ4vyDjtfhBAOJcMwLzniyF-9ufg8vMHSGcZG5uVa0OdCSV_Lz0kj8QTm3ySXaV8wnLGYYvJq65vc4v29IHRIMhw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refresh_token\": \"v3.local.N64NljzaSpaYZZSutjcFC1cEKbgKN24JMqdNQWyHQqiRuTQh_o6amsKpTSSZHo8qNUs0xzAw0eEQWe3E2mus-5nXBWTymiDFh3RxKuvcW_KtDhb8cT1uWO4hlMpYKPE8B_Xt9pRlcWyaCSfalJUfFqxhmoqhtfECK9t5e_ekO1B3-yr4AgH8Y9z2WAfoMBbthhuD6JswVxUMp8oIFaZQTHpFPGuXEgt6Ip4_RHYjcJLCJuUSoUD11GivmS0jOitshdqSqxhqZsneO7Jhw9KYknNlbytyPBd4CKMszp4NGmN1488nBpvNlww1aRg9UnnL92QSvt9xGg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/renew",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"renew"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

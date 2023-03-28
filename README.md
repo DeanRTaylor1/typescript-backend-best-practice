@@ -121,6 +121,14 @@ Migrates the database schema down by one step only using `db-migrate`.
 
 Runs tests in CI mode with code coverage enabled using `jest`.
 
-```
+### `npm run lint`
 
-```
+Runs ESLint to check for linting errors in the project and fix them.
+
+### `npm run coverage-badges`
+
+Generates code coverage badges using Jest and saves them in the `./icons` directory.
+
+### `npm run cleanup`
+
+Rolls back the database migrations and removes the PostgreSQL Docker container used for testing.
