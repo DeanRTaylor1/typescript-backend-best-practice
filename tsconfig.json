@@ -1,0 +1,107 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es2017",
+    "lib": [
+      "es2017",
+      "esnext.asynciterable"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "@types/jest",
+      "node"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "pretty": true,
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "dist",
+    "allowJs": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "baseUrl": "src",
+    "skipLibCheck": true,
+    "paths": {
+      "@config/*": [
+        "config/*"
+      ],
+      "@controllers/*": [
+        "http/controllers/*"
+      ],
+      "@databases/*": [
+        "databases/*"
+      ],
+      "@enum/*": [
+        "enum/*"
+      ],
+      "@dtos/*": [
+        "http/dtos/*"
+      ],
+      "@repositories/*": [
+        "repositories/*"
+      ],
+      "@exceptions/*": [
+        "exceptions/*"
+      ],
+      "@interfaces/*": [
+        "interfaces/*"
+      ],
+      "@middlewares/*": [
+        "http/middlewares/*"
+      ],
+      "@models/*": [
+        "models/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@env": [
+        "env"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@decorators/*": [
+        "decorators/*"
+      ],
+      "@app": [
+        "app"
+      ],
+      "@infrastructure/*": [
+        "infrastructure/*"
+      ],
+      "@globalconfig": [
+        "config"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.json",
+    ".env",
+    "src/tests/*.test.ts",
+    "src/tests/**/*.test.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/logs",
+    "src/tests"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
+}

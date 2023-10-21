@@ -1,0 +1,13 @@
+{
+  "name": "typescript-backend-best-practice",
+  "version": "1.0.0",
+  "main": "app.ts",
+  "repository": "https://github.com/DeanRTaylor1/typescript-backend-best-practice.git",
+  "author": "DeanRTaylor1 <deanrtaylor@hotmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
