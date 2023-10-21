@@ -1,9 +1,10 @@
 import { App } from "@app";
-import * as dotenv from "dotenv";
+import { validateEnv } from "@lib/env/utils";
 
-dotenv.config();
+validateEnv();
 
 (() => {
+  console.log(process.cwd());
   const app = new App();
   app.listen();
 })();

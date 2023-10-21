@@ -1,9 +1,9 @@
 import express, { IRouterMatcher } from "express";
 import path from "path";
 import { Container } from "typedi";
-import * as dotenv from "dotenv";
 import { useContainer } from "class-validator";
 import { useExpressServer } from "routing-controllers";
+import { env } from "@env";
 
 class App {
   private app: express.Application = express();
@@ -12,8 +12,8 @@ class App {
 
   constructor() {
     //TODO Update env
-    this.env = process.env || "development";
-    this.port = process.env.port || 3001;
+    this.env = env.nodeEnv || "development";
+    this.port = env.core.port || 3000;
     this.registerMiddleware();
     this.registerHealthCheck();
     this.initRoutes();
