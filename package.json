@@ -27,6 +27,7 @@
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.10.4",
     "sequelize": "^6.33.0",
+    "sequelize-typescript": "^2.1.5",
     "typedi": "^0.10.0",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"

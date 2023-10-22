@@ -8,6 +8,8 @@ import { Container } from "typedi";
 import { useContainer } from "class-validator";
 import { useExpressServer } from "routing-controllers";
 import morgan from "morgan";
+import UsersRepository from "api/repositories/users.repository";
+import User from "api/models/entities/User.entity";
 
 class App {
   private app: express.Application = express();
@@ -56,7 +58,7 @@ class App {
   }
 
   private registerHealthCheck() {
-    this.app.get("/", (req: Request, res: Response) => {
+    this.app.get("/", async (req: Request, res: Response) => {
       res.json({ status: 200, message: "ok" });
     });
   }

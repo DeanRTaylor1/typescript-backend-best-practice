@@ -28,6 +28,7 @@ const env = {
     database: getOsEnv("DB_DATABASE"),
     host: getOsEnv("DB_HOST"),
     dialect: getOsEnv("DB_DIALECT"),
+    port: getOsEnv("DB_PORT"),
   },
 };
 
