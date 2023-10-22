@@ -1,6 +1,6 @@
 import { cleanEnv, port, str } from "envalid";
 
-const isUndefined = (prop: {}) => {
+const isUndefined = (prop: string | number | unknown) => {
   return typeof prop === "undefined";
 };
 

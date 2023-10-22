@@ -17,6 +17,7 @@ const env = {
   logs: {
     logDir: getOsEnv("LOG_DIR"),
     logFormat: getOsEnv("LOG_FORMAT"),
+    level: getOsEnv("LOG_LEVEL"),
   },
   core: {
     port: getOsEnv("PORT"),
