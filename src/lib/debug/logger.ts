@@ -59,12 +59,6 @@ logger.add(
   })
 );
 
-const stream = {
-  write: (message: string) => {
-    logger.info(message.substring(0, message.lastIndexOf("\n")));
-  },
-};
-
 morgan.token("colored-status", (_: Request, res: Response) =>
   formatStatus(res.statusCode)
 );
@@ -77,4 +71,4 @@ const morganStream = {
   },
 };
 
-export { logger, stream, morganStream };
+export { logger, morganStream };

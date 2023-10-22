@@ -1,6 +1,6 @@
 import clc from "cli-color";
 
-export const formatStatus = (status: number) => {
+const formatStatus = (status: number) => {
   switch (true) {
     case status >= 500:
       return clc.bgRed(` ${status} `);
@@ -15,7 +15,7 @@ export const formatStatus = (status: number) => {
   }
 };
 
-export const formatMethod = (method: string) => {
+const formatMethod = (method: string) => {
   switch (method) {
     case "GET":
       return clc.bgBlueBright(` ${method}      =>`);
@@ -32,9 +32,4 @@ export const formatMethod = (method: string) => {
   }
 };
 
-function stripAnsi(str) {
-  // eslint-disable-next-line no-control-regex
-  return str.replace(/\x1B\[[0-9;]*m/g, "");
-}
-
-export { stripAnsi };
+export { formatMethod, formatStatus };
