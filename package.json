@@ -7,8 +7,10 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon",
-    "lint": "eslint --ignore-path .gitignore --ext .ts src/"
+    "dev:docker": "yarn db:setup && cross-env NODE_ENV=development nodemon",
+    "lint": "eslint --ignore-path .gitignore --ext .ts src/",
+    "db:setup": "sequelize-cli db:migrate",
+    "dev": "cross-env DOCKERFILE_NAME=Dockerfile.dev docker-compose up --build"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -21,8 +23,10 @@
     "express": "^4.18.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.10.4",
+    "sequelize": "^6.33.0",
     "typedi": "^0.10.0",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
@@ -41,6 +45,7 @@
     "jest": "^29.7.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.3",
+    "sequelize-cli": "^6.6.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"

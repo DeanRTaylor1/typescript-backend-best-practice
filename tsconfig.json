@@ -59,7 +59,7 @@
         "http/middlewares/*"
       ],
       "@models/*": [
-        "models/*"
+        "src/databases/models/*"
       ],
       "@services/*": [
         "services/*"
@@ -92,7 +92,8 @@
     "src/**/*.json",
     ".env",
     "src/tests/*.test.ts",
-    "src/tests/**/*.test.ts"
+    "src/tests/**/*.test.ts",
+    "src/databases/config/config.js"
   ],
   "exclude": [
     "node_modules",

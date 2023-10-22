@@ -1,5 +1,3 @@
-import { cleanEnv, port, str } from "envalid";
-
 const isUndefined = (prop: string | number | unknown) => {
   return typeof prop === "undefined";
 };
@@ -12,11 +10,11 @@ const getOsEnv = (key: string): string => {
   return process.env[key];
 };
 
-const validateEnv = () => {
-  cleanEnv(process.env, {
-    NODE_ENV: str(),
-    port: port(),
-  });
-};
+// const validateEnv = () => {
+//   cleanEnv(process.env, {
+//     NODE_ENV: str(),
+//     port: port(),
+//   });
+// };
 
-export { getOsEnv, validateEnv };
+export { getOsEnv };

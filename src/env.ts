@@ -2,12 +2,12 @@ import path from "path";
 import { getOsEnv } from "@lib/env/utils";
 import * as dotenv from "dotenv";
 
-dotenv.config({
-  path: path.join(
-    process.cwd(),
-    `.env.${process.env.NODE_ENV || "development"}.local`
-  ),
-});
+const envPath = path.join(
+  process.cwd(),
+  `.env.${process.env.NODE_ENV || "development"}.local`
+);
+
+dotenv.config({ path: envPath });
 
 const env = {
   nodeEnv: process.env.NODE_ENV || "development",
@@ -21,6 +21,13 @@ const env = {
   },
   core: {
     port: getOsEnv("PORT"),
+  },
+  db: {
+    username: getOsEnv("DB_USERNAME"),
+    password: getOsEnv("DB_PASSWORD"),
+    database: getOsEnv("DB_DATABASE"),
+    host: getOsEnv("DB_HOST"),
+    dialect: getOsEnv("DB_DIALECT"),
   },
 };
 

@@ -24,5 +24,8 @@
             "error",
             "always"
         ]
-    }
+    },
+    "ignorePatterns": [
+        "src/databases/**"
+    ]
 }
