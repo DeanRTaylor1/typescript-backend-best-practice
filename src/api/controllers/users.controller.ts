@@ -1,10 +1,23 @@
 import { BaseController } from "./base.controller";
 import { Request, Response } from "express";
 import User from "api/models/entities/User.entity";
-import { IUser } from "api/models/entities/types/entity.types";
 import { UsersService } from "api/services/users.service";
+import { BodyToCamelCase } from "@decorators/SnakeToCamel.decorator";
+import { CreateUserDTO } from "api/validation/DTO/user.dto";
+import validationMiddleware from "middlewares/validation.middleware";
+import { CamelCaseObj, SnakeCaseObj } from "@lib/validation/types";
+import { logger } from "@lib/debug/logger";
+import { HttpException } from "api/errors/HttpException";
+import { StatusCodeEnum } from "api/enum/api.enum";
 
-import { Body, Get, JsonController, Post, Req, Res } from "routing-controllers";
+import {
+  Get,
+  JsonController,
+  Post,
+  Req,
+  Res,
+  UseBefore,
+} from "routing-controllers";
 import { Service } from "typedi";
 
 @JsonController("/users")
@@ -22,18 +35,28 @@ class UsersController extends BaseController {
   }
 
   @Post("/")
+  @UseBefore(validationMiddleware(CreateUserDTO))
   public async createUser(
-    @Body() { firstName, lastName, email }: IUser,
+    @BodyToCamelCase() body: CamelCaseObj<CreateUserDTO>,
     @Req() _: Request,
     @Res() res: Response
   ) {
-    const user = await this.usersService.createUser({
-      firstName,
-      lastName,
-      email,
-    });
+    try {
+      const user = await this.usersService.createUser(body);
 
-    return this.responseSuccess<User>(user, "Success", res);
+      return this.responseSuccess<SnakeCaseObj<User>>(
+        user.toJson(),
+        "Success",
+        res
+      );
+    } catch (error: unknown) {
+      logger.error(error);
+
+      throw new HttpException(
+        StatusCodeEnum.INTERNAL_SERVER_ERROR,
+        "Something went wrong."
+      );
+    }
   }
 }
 

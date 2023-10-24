@@ -1,6 +1,8 @@
+import { StatusCodeEnum } from "api/enum/api.enum";
+
 export interface ApiResponse<T> {
-  status: number;
-  code: number;
+  status: boolean;
+  code: StatusCodeEnum;
   data: T;
   message: string;
 }

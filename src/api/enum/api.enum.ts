@@ -14,6 +14,7 @@ export enum StatusCodeEnum {
   METHOD_NOT_ALLOWED = 405,
   REQUEST_TIMEOUT = 408,
   INTERNAL_SERVER_ERROR = 500,
+  VALIDATION_ERROR = 422
 }
 
 export enum API_RES {

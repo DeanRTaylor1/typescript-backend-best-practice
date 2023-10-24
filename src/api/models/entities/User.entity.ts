@@ -1,3 +1,5 @@
+import { SnakeCaseObj } from "@lib/validation/types";
+import { convertKeysToSnakeCase } from "@lib/validation/utils";
 import { UserRoleEnum, UserStatusEnum } from "api/enum/users.enum";
 import {
   AutoIncrement,
@@ -46,4 +48,8 @@ export default class User extends Model<User> {
 
   @Column(DataType.DATE)
   updatedAt: Date;
+
+  toJson(): SnakeCaseObj<User> {
+    return convertKeysToSnakeCase(this.get());
+  }
 }
