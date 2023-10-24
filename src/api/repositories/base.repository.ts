@@ -1,6 +1,7 @@
 import { Service } from "typedi";
 import { ModelCtor, Model } from "sequelize-typescript";
 import { WhereOptions } from "sequelize";
+import { ICreateAttributes } from "api/models/entities/types/entity.types";
 
 @Service()
 export abstract class BaseRepository<M extends Model> {
@@ -22,4 +23,6 @@ export abstract class BaseRepository<M extends Model> {
     const where: WhereOptions = { id };
     return this.model.destroy({ where });
   }
+
+  abstract create(data: ICreateAttributes<M["_attributes"]>): Promise<M>;
 }

@@ -1,4 +1,4 @@
-import DB from "api/models";
+import { DB } from "api/models";
 import User from "api/models/entities/User.entity";
 import { ModelCtor } from "sequelize-typescript";
 
