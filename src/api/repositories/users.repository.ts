@@ -12,8 +12,8 @@ class UsersRepository extends BaseRepository<User> {
     super(User);
   }
 
-  async create({ firstName, lastName, email }: IUser): Promise<User> {
-    return this.model.create({ firstName, lastName, email });
+  async create(user: IUser): Promise<User> {
+    return this.model.create(user);
   }
 }
 

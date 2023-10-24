@@ -1,9 +1,12 @@
+import { UserRoleEnum, UserStatusEnum } from "api/enum/users.enum";
 import {
   AutoIncrement,
   Column,
   Model,
   PrimaryKey,
   Table,
+  Default,
+  DataType,
 } from "sequelize-typescript";
 
 @Table({
@@ -12,21 +15,35 @@ import {
 export default class User extends Model<User> {
   @PrimaryKey
   @AutoIncrement
-  @Column
+  @Column(DataType.INTEGER)
   id!: number;
 
-  @Column
-  firstName: string;
+  @Column(DataType.STRING)
+  username: string;
 
-  @Column
-  lastName: string;
+  @Column(DataType.STRING)
+  firstName: string | null;
 
-  @Column
+  @Column(DataType.STRING)
+  lastName: string | null;
+
+  @Column(DataType.STRING)
   email: string;
 
-  @Column
+  @Default(UserStatusEnum.INACTIVE)
+  @Column(DataType.ENUM({ values: Object.values(UserStatusEnum) }))
+  status: UserStatusEnum;
+
+  @Default(UserRoleEnum.USER)
+  @Column(DataType.ENUM({ values: Object.values(UserRoleEnum) }))
+  role: UserRoleEnum;
+
+  @Column(DataType.STRING)
+  hashedPassword: string;
+
+  @Column(DataType.DATE)
   createdAt: Date;
 
-  @Column
+  @Column(DataType.DATE)
   updatedAt: Date;
 }

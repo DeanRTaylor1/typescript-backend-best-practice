@@ -16,7 +16,7 @@
     "dropdb": "docker exec -it postgres14 dropdb --username=root test_db",
     "test-jest": "jest --ci --passWithNoTests --runInBand",
     "cleanup": "docker stop postgres14 && docker rm postgres14",
-    "test": "yarn postgres && yarn createdb && cross-env NODE_ENV=test yarn db:setup &&  yarn test-jest && yarn cleanup"
+    "test": "yarn postgres && yarn createdb && cross-env NODE_ENV=test yarn db:setup && yarn test-jest; yarn cleanup"
   },
   "dependencies": {
     "body-parser": "^1.20.2",

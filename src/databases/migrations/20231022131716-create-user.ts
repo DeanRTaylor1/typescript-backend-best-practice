@@ -9,6 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      username: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
       firstName: {
         type: Sequelize.STRING,
         field: "first_name",
@@ -19,6 +24,23 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      hashedPassword: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        field: "hashed_password",
+      },
+      status: {
+        type: Sequelize.ENUM("active", "inactive"),
+        default: "inactive",
+        allowNull: false,
+      },
+      role: {
+        type: Sequelize.ENUM("admin", "user", "manager"),
+        default: "user",
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
