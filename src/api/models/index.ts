@@ -53,4 +53,4 @@ const DB = {
   ...sequelize.models,
 };
 
-export default DB;
+export { DB };

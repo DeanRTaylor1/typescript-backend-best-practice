@@ -26,6 +26,8 @@
         ]
     },
     "ignorePatterns": [
-        "src/databases/**"
+        "src/databases/**",
+        "jest.config.js",
+        "src/lib/__tests__/**"
     ]
 }

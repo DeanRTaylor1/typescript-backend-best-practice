@@ -10,7 +10,7 @@
       "node_modules/@types"
     ],
     "types": [
-      "@types/jest",
+      "jest",
       "node"
     ],
     "allowSyntheticDefaultImports": true,
@@ -35,7 +35,7 @@
         "config/*"
       ],
       "@controllers/*": [
-        "http/controllers/*"
+        "api/controllers/*"
       ],
       "@databases/*": [
         "databases/*"
@@ -47,7 +47,7 @@
         "http/dtos/*"
       ],
       "@repositories/*": [
-        "repositories/*"
+        "api/repositories/*"
       ],
       "@exceptions/*": [
         "exceptions/*"
@@ -56,13 +56,13 @@
         "interfaces/*"
       ],
       "@middlewares/*": [
-        "http/middlewares/*"
+        "api/middlewares/*"
       ],
       "@models/*": [
         "src/databases/models/*"
       ],
       "@services/*": [
-        "services/*"
+        "api/services/*"
       ],
       "@utils/*": [
         "utils/*"
@@ -74,7 +74,7 @@
         "lib/*"
       ],
       "@decorators/*": [
-        "decorators/*"
+        "api/decorators/*"
       ],
       "@app": [
         "app"

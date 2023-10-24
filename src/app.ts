@@ -1,15 +1,15 @@
+import "reflect-metadata";
 import path from "path";
 
 import { env } from "@env";
 import { morganStream } from "@lib/debug/logger";
+import { UsersController } from "api/controllers/users.controller";
+import { DB } from "api/models";
 
 import express, { Request, Response } from "express";
 import { Container } from "typedi";
-import { useContainer } from "class-validator";
-import { useExpressServer } from "routing-controllers";
+import { useExpressServer, useContainer } from "routing-controllers";
 import morgan from "morgan";
-import UsersRepository from "api/repositories/users.repository";
-import User from "api/models/entities/User.entity";
 
 class App {
   private app: express.Application = express();
@@ -20,6 +20,8 @@ class App {
     //TODO Update env
     this.env = env.nodeEnv || "development";
     this.port = env.core.port || 3000;
+
+    this.connectToDatabase();
     this.registerMiddleware();
     this.registerHealthCheck();
     this.initRoutes();
@@ -33,6 +35,10 @@ class App {
 
   public getApp() {
     return this.app;
+  }
+
+  private connectToDatabase() {
+    DB.sequelize.authenticate();
   }
 
   public registerMiddleware() {
@@ -51,10 +57,23 @@ class App {
     useContainer(Container);
     useExpressServer(this.app, {
       defaultErrorHandler: false,
-      routePrefix: "api/v1",
+      routePrefix: "/api/v1",
       middlewares: [path.join(__dirname, "/api/middleware/*")],
       controllers: [path.join(__dirname, "/api/controllers/*")],
     });
+
+    const constructorParams = Reflect.getMetadata(
+      "design:paramtypes",
+      UsersController
+    );
+    console.log("Constructor parameter types:", constructorParams);
+
+    const usersRepositoryMetadata = Reflect.getMetadata(
+      "custom:metadata:key",
+      UsersController,
+      "usersRepository"
+    );
+    console.log("Metadata for usersRepository:", usersRepositoryMetadata);
   }
 
   private registerHealthCheck() {
