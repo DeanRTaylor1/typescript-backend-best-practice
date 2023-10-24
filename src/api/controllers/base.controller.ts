@@ -27,7 +27,7 @@ export class BaseController {
 
   protected getResponse<T>(res: Response, status: boolean): Response {
     const result: ApiResponse<T> = {
-      status: status ? 1 : 0,
+      status: status ? true : false,
       code: this.code,
       data: this.data as T,
       message: this.message,

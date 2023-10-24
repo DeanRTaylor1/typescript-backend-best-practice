@@ -3,13 +3,13 @@ import path from "path";
 
 import { env } from "@env";
 import { morganStream } from "@lib/debug/logger";
-import { UsersController } from "api/controllers/users.controller";
 import { DB } from "api/models";
 
 import express, { Request, Response } from "express";
 import { Container } from "typedi";
 import { useExpressServer, useContainer } from "routing-controllers";
 import morgan from "morgan";
+import errorMiddleware from "middlewares/errors.middleware";
 
 class App {
   private app: express.Application = express();
@@ -23,8 +23,9 @@ class App {
 
     this.connectToDatabase();
     this.registerMiddleware();
-    this.registerHealthCheck();
     this.initRoutes();
+    this.initializeErrorHandling();
+    this.registerHealthCheck();
   }
 
   public listen() {
@@ -39,6 +40,10 @@ class App {
 
   private connectToDatabase() {
     DB.sequelize.authenticate();
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   public registerMiddleware() {
@@ -61,19 +66,6 @@ class App {
       middlewares: [path.join(__dirname, "/api/middleware/*")],
       controllers: [path.join(__dirname, "/api/controllers/*")],
     });
-
-    const constructorParams = Reflect.getMetadata(
-      "design:paramtypes",
-      UsersController
-    );
-    console.log("Constructor parameter types:", constructorParams);
-
-    const usersRepositoryMetadata = Reflect.getMetadata(
-      "custom:metadata:key",
-      UsersController,
-      "usersRepository"
-    );
-    console.log("Metadata for usersRepository:", usersRepositoryMetadata);
   }
 
   private registerHealthCheck() {
