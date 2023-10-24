@@ -3,6 +3,8 @@ import { UsersService } from "../users.service";
 import { UserStatusEnum, UserRoleEnum } from "api/enum/users.enum";
 import User from "api/models/entities/User.entity";
 import { IUser } from "api/models/entities/types/entity.types";
+import { CamelCaseObj } from "@lib/validation/types";
+import { CreateUserDTO } from "api/validation/DTO/user.dto";
 // import DB from "api/models";
 
 const usersService = Container.get(UsersService);
@@ -11,7 +13,7 @@ describe("UsersService tests", () => {
   describe("createUser", () => {
     const testCases: Array<{
       description: string;
-      input: IUser;
+      input: CamelCaseObj<CreateUserDTO>;
       expected: Partial<User>;
     }> = [
       {
@@ -21,7 +23,8 @@ describe("UsersService tests", () => {
           firstName: "John",
           lastName: "Doe",
           email: "john.doe@example.com",
-          hashedPassword: "somehashedpassword1",
+          password: "somehashedpassword1",
+          role: UserRoleEnum.USER,
         },
         expected: {
           username: "username",
@@ -39,7 +42,8 @@ describe("UsersService tests", () => {
           firstName: "Jane",
           lastName: "Doe",
           email: "jane.doe@example.com",
-          hashedPassword: "somehashedpassword2",
+          password: "somehashedpassword2",
+          role: UserRoleEnum.USER,
         },
         expected: {
           username: "username1",
@@ -57,7 +61,8 @@ describe("UsersService tests", () => {
           firstName: "Alice",
           lastName: "Johnson",
           email: "alice.johnson@example.com",
-          hashedPassword: "somehashedpassword3",
+          password: "somehashedpassword3",
+          role: UserRoleEnum.USER,
         },
         expected: {
           username: "username2",
