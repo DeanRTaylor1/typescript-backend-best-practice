@@ -1,11 +1,10 @@
-import Container from "typedi";
 import { UsersService } from "../users.service";
 import { UserStatusEnum, UserRoleEnum } from "api/enum/users.enum";
 import User from "api/models/entities/User.entity";
-import { IUser } from "api/models/entities/types/entity.types";
 import { CamelCaseObj } from "@lib/validation/types";
 import { CreateUserDTO } from "api/validation/DTO/user.dto";
-// import DB from "api/models";
+
+import Container from "typedi";
 
 const usersService = Container.get(UsersService);
 

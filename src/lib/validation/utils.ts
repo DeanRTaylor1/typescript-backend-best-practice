@@ -10,20 +10,25 @@ function camelToSnake(str: string): string {
     .toLowerCase();
 }
 
-function convertKeysToCamelCase(obj: object): object {
-  if (obj === null || obj === undefined) {
-    return obj;
-  } else if (Array.isArray(obj)) {
-    return obj.map((item) => convertKeysToCamelCase(item));
-  } else if (typeof obj === "object") {
-    const newObj = {};
-    for (const [key, value] of Object.entries(obj)) {
-      newObj[snakeToCamel(key)] = convertKeysToCamelCase(value);
-    }
-    return newObj;
-  } else {
+function convertKeysToCamelCase<T>(obj: T) {
+  if (obj instanceof Date) {
     return obj;
   }
+
+  if (typeof obj !== "object" || obj === null) {
+    return obj;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(convertKeysToCamelCase);
+  }
+
+  const newObj = {};
+  for (const [key, value] of Object.entries(obj)) {
+    const newKey = snakeToCamel(key);
+    newObj[newKey] = convertKeysToCamelCase(value);
+  }
+  return newObj;
 }
 
 function convertKeysToSnakeCase<T>(obj: T) {
