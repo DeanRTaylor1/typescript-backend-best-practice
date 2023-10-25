@@ -1,35 +1,63 @@
-import clc from "cli-color";
+enum TerminalEscapeCodes {
+  BgBlack = "\u001b[40m",
+  BgRed = "\u001b[41m",
+  BgGreen = "\u001b[42m",
+  BgYellow = "\u001b[43m",
+  BgCyan = "\u001b[46m",
+  BgMagenta = "\u001b[45m",
+  BgBlueBright = "\u001b[104m",
+  Reset = "\u001b[0m",
+}
 
 const formatStatus = (status: number) => {
+  let color: TerminalEscapeCodes;
   switch (true) {
     case status >= 500:
-      return clc.bgRed(` ${status} `);
+      color = TerminalEscapeCodes.BgRed;
+      break;
     case status >= 400:
-      return clc.bgYellow(` ${status} `);
+      color = TerminalEscapeCodes.BgYellow;
+      break;
     case status >= 300:
-      return clc.bgCyan(` ${status} `);
+      color = TerminalEscapeCodes.BgCyan;
+      break;
     case status >= 200:
-      return clc.bgGreen(` ${status} `);
+      color = TerminalEscapeCodes.BgGreen;
+      break;
     default:
-      return clc.bgBlack();
+      color = TerminalEscapeCodes.BgBlack;
   }
+  return `${color} ${status} ${TerminalEscapeCodes.Reset}`;
 };
 
 const formatMethod = (method: string) => {
+  let color: TerminalEscapeCodes;
+  let padding = "";
   switch (method) {
     case "GET":
-      return clc.bgBlueBright(` ${method}      =>`);
+      color = TerminalEscapeCodes.BgBlueBright;
+      padding = "      ";
+      break;
     case "POST":
-      return clc.bgCyan(` ${method}     =>`);
+      color = TerminalEscapeCodes.BgCyan;
+      padding = "     ";
+      break;
     case "PUT":
-      return clc.bgYellow(` ${method}      =>`);
+      color = TerminalEscapeCodes.BgYellow;
+      padding = "      ";
+      break;
     case "PATCH":
-      return clc.bgMagenta(` ${method}    =>`);
+      color = TerminalEscapeCodes.BgMagenta;
+      padding = "    ";
+      break;
     case "DELETE":
-      return clc.bgRed(` ${method}   =>`);
+      color = TerminalEscapeCodes.BgRed;
+      padding = "   ";
+      break;
     default:
-      return clc.bgBlack();
+      color = TerminalEscapeCodes.BgBlack;
   }
+  return `${color} ${method}${padding} =>${TerminalEscapeCodes.Reset}`;
 };
 
 export { formatMethod, formatStatus };
