@@ -10,6 +10,7 @@ import { Container } from "typedi";
 import { useExpressServer, useContainer } from "routing-controllers";
 import morgan from "morgan";
 import errorMiddleware from "middlewares/errors.middleware";
+import { TerminalEscapeCodes } from "@lib/debug/utils";
 
 class App {
   private app: express.Application = express();
@@ -30,7 +31,25 @@ class App {
 
   public listen() {
     this.app.listen(this.port, () => {
-      console.log(`App ready and listening on port: ${this.port}.`);
+      const art = `
+        ██████╗ ███████╗ █████╗ ██████╗ ██╗   ██╗
+        ██╔══██╗██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝
+        ██████╔╝█████╗  ███████║██║  ██║ ╚████╔╝ 
+        ██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝  
+        ██║  ██║███████╗██║  ██║██████╔╝   ██║   
+        ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝
+      `;
+      console.log(`${art}`);
+      console.log(
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      );
+      console.log(
+        `         ${TerminalEscapeCodes.BgGreen}Server ready and listening on port: ${this.port}.${TerminalEscapeCodes.Reset}`
+      );
+      console.log("");
+      console.log(
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      );
     });
   }
 
