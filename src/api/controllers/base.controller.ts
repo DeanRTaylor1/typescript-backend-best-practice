@@ -4,11 +4,11 @@ import { Response } from "express";
 import BaseEntity from "api/models/entities/types/Base.entity";
 import { env } from "@env";
 import { Model } from "sequelize-typescript";
-import { Sanitized, TaintedFieldsSet } from "./types/controller.types";
-
-type ObjectOnly<T> = T extends object
-  ? T
-  : "Error: Expected an object, but received a primitive type";
+import {
+  ObjectOnly,
+  Sanitized,
+  TaintedFieldsSet,
+} from "./types/controller.types";
 
 export class BaseController {
   protected code: StatusCodeEnum = StatusCodeEnum.OK;
