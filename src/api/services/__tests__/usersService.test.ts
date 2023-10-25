@@ -24,6 +24,7 @@ describe("UsersService tests", () => {
           email: "john.doe@example.com",
           password: "somehashedpassword1",
           role: UserRoleEnum.USER,
+          status: UserStatusEnum.INACTIVE,
         },
         expected: {
           username: "username",
@@ -43,6 +44,7 @@ describe("UsersService tests", () => {
           email: "jane.doe@example.com",
           password: "somehashedpassword2",
           role: UserRoleEnum.USER,
+          status: UserStatusEnum.INACTIVE,
         },
         expected: {
           username: "username1",
@@ -62,6 +64,7 @@ describe("UsersService tests", () => {
           email: "alice.johnson@example.com",
           password: "somehashedpassword3",
           role: UserRoleEnum.USER,
+          status: UserStatusEnum.INACTIVE,
         },
         expected: {
           username: "username2",

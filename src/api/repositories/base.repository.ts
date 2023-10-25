@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import { ModelCtor, Model } from "sequelize-typescript";
 import { WhereOptions } from "sequelize";
 import { ICreateAttributes } from "api/models/entities/types/entity.types";
+import { Pagination } from "@decorators/pagination.decorator";
 
 @Service()
 export abstract class BaseRepository<M extends Model> {
@@ -15,8 +16,8 @@ export abstract class BaseRepository<M extends Model> {
     return this.model.findByPk(id);
   }
 
-  async getAll(): Promise<Array<M>> {
-    return this.model.findAll();
+  async getAll({ skip, limit }: Pagination): Promise<Array<M>> {
+    return this.model.findAll({ offset: skip, limit });
   }
 
   async destroyById(id: number): Promise<number> {

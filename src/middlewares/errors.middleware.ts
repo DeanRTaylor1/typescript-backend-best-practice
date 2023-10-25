@@ -11,7 +11,6 @@ const errorMiddleware = (
 ) => {
   const code = error.status || 500;
   const message = error.message || "Something Wrong";
-  console.log("Error in middleware:", error);
 
   const result: ApiResponse<object> = {
     status: false,

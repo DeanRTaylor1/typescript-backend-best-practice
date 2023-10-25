@@ -1,34 +1,23 @@
 import { API_RES, StatusCodeEnum } from "api/enum/api.enum";
 import { ApiResponse } from "api/types/response.interface";
-import { HttpError } from "routing-controllers";
 import { Response } from "express";
 import BaseEntity from "api/models/entities/types/Base.entity";
-import { SnakeCaseObj } from "@lib/validation/types";
+import { env } from "@env";
 
 export class BaseController {
   protected code: StatusCodeEnum = StatusCodeEnum.OK;
   protected data: unknown;
-  protected message: string = "Success.";
+  protected message: string = "Success";
   protected typeRes: API_RES = API_RES.JSON;
-  protected exception: HttpError;
+  protected enableSnakeCase: boolean = env.config.enableSnakeCase;
 
   public setCode(code: StatusCodeEnum): this {
     this.code = code;
     return this;
   }
 
-  public setData<T>(data: T): this {
-    if (data instanceof Array) {
-      this.data = data.map((item) => {
-        return this.isBaseEntity(item) ? this.getSnakeEntity(item) : item;
-      });
-      return this;
-    }
-    if (this.isBaseEntity<T>(data)) {
-      this.data = this.getSnakeEntity(data);
-      return this;
-    }
-    this.data = data;
+  public setData<T>(data: T | BaseEntity<T>[]): this {
+    this.data = this.transformData(data);
     return this;
   }
 
@@ -37,49 +26,60 @@ export class BaseController {
     return this;
   }
 
+  public setTypeRes(type: API_RES): this {
+    this.typeRes = type;
+    return this;
+  }
+
   protected getResponse<T>(res: Response, status: boolean): Response {
     const result: ApiResponse<T> = {
-      status: status ? true : false,
+      status,
       code: this.code,
       data: this.data as T,
       message: this.message,
     };
 
-    if (this.typeRes === API_RES.JSON) {
-      return res.status(this.code).json(result);
+    switch (this.typeRes) {
+      case API_RES.JSON:
+        return res.status(this.code).json(result);
+      case API_RES.SEND:
+        return res.status(this.code).send(result);
+      default:
+        throw new Error(`Unsupported response type: ${this.typeRes}`);
     }
-
-    if (this.typeRes === API_RES.SEND) {
-      return res.status(this.code).send(result);
-    }
-
-    // Default to JSON response if type is not recognized
-    return res.status(this.code).json(result);
   }
 
   public responseSuccess<T>(data: T, message: string, res: Response): Response {
-    this.setCode(StatusCodeEnum.OK);
-    this.setData(data);
-    this.setMessage(message);
-    return this.getResponse(res, true);
+    return this.setCode(StatusCodeEnum.OK)
+      .setData(data)
+      .setMessage(message)
+      .getResponse<T>(res, true);
   }
 
-  public responseErrors(
+  public responseError(
     res: Response,
     message: string = "An error occurred",
     statusCode: StatusCodeEnum = StatusCodeEnum.INTERNAL_SERVER_ERROR
   ): Response {
-    this.setCode(statusCode);
-    this.setData(null);
-    this.setMessage(message);
-    return this.getResponse<null>(res, false);
+    return this.setCode(statusCode)
+      .setData(null)
+      .setMessage(message)
+      .getResponse<null>(res, false);
   }
 
-  private getSnakeEntity<T>(data: BaseEntity<T>): SnakeCaseObj<T> {
-    return data.toSnake();
+  private transformData<T>(data: T | BaseEntity<T>[]): unknown {
+    if (!this.enableSnakeCase) return data;
+
+    if (Array.isArray(data)) {
+      return data.map((item) =>
+        this.isBaseEntity(item) ? item.toSnake() : item
+      );
+    }
+
+    return this.isBaseEntity(data) ? data.toSnake() : data;
   }
 
   private isBaseEntity<T>(object: unknown): object is BaseEntity<T> {
-    return (object as BaseEntity<T>).toSnake !== undefined;
+    return (object as BaseEntity<T>)?.toSnake !== undefined;
   }
 }
