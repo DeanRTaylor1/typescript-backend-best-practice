@@ -1,4 +1,4 @@
-enum TerminalEscapeCodes {
+export enum TerminalEscapeCodes {
   BgBlack = "\u001b[40m",
   BgRed = "\u001b[41m",
   BgGreen = "\u001b[42m",
