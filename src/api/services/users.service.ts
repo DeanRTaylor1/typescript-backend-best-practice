@@ -28,6 +28,10 @@ class UsersService {
     return this.usersRepository.findById(userId);
   }
 
+  public async getUserByEmail(email: string): Promise<User> {
+    return this.usersRepository.findByEmail(email);
+  }
+
   private async hashUserPassword(
     userDTO: CamelCaseObj<CreateUserDTO>
   ): Promise<ICreateAttributes<User>> {

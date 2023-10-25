@@ -15,6 +15,10 @@ class UsersRepository extends BaseRepository<User> {
   async create(user: ICreateAttributes<User>): Promise<User> {
     return this.model.create(user);
   }
+
+  async findByEmail(email: string): Promise<User> {
+    return this.model.findOne({ where: { email } });
+  }
 }
 
 export default UsersRepository;

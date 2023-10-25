@@ -35,3 +35,12 @@ export class CreateUserDTO {
   @IsEnum(UserStatusEnum)
   status: UserStatusEnum;
 }
+
+export class LoginDTO {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+}
