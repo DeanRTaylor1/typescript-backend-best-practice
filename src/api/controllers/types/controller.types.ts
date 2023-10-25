@@ -9,4 +9,14 @@ type TaintedFieldTypes = (typeof TaintedFields)[keyof typeof TaintedFields];
 
 type Sanitized<T> = Omit<keyof T, TaintedFieldTypes>;
 
-export { TaintedFieldTypes, TaintedFields, Sanitized, TaintedFieldsSet };
+type ObjectOnly<T> = T extends object
+  ? T
+  : "Error: Expected an object, but received a primitive type";
+
+export {
+  ObjectOnly,
+  TaintedFieldTypes,
+  TaintedFields,
+  Sanitized,
+  TaintedFieldsSet,
+};
