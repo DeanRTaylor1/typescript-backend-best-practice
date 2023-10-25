@@ -2,6 +2,8 @@ import { API_RES, StatusCodeEnum } from "api/enum/api.enum";
 import { ApiResponse } from "api/types/response.interface";
 import { HttpError } from "routing-controllers";
 import { Response } from "express";
+import BaseEntity from "api/models/entities/types/Base.entity";
+import { SnakeCaseObj } from "@lib/validation/types";
 
 export class BaseController {
   protected code: StatusCodeEnum = StatusCodeEnum.OK;
@@ -16,6 +18,16 @@ export class BaseController {
   }
 
   public setData<T>(data: T): this {
+    if (data instanceof Array) {
+      this.data = data.map((item) => {
+        return this.isBaseEntity(item) ? this.getSnakeEntity(item) : item;
+      });
+      return this;
+    }
+    if (this.isBaseEntity<T>(data)) {
+      this.data = this.getSnakeEntity(data);
+      return this;
+    }
     this.data = data;
     return this;
   }
@@ -61,5 +73,13 @@ export class BaseController {
     this.setData(null);
     this.setMessage(message);
     return this.getResponse<null>(res, false);
+  }
+
+  private getSnakeEntity<T>(data: BaseEntity<T>): SnakeCaseObj<T> {
+    return data.toSnake();
+  }
+
+  private isBaseEntity<T>(object: unknown): object is BaseEntity<T> {
+    return (object as BaseEntity<T>).toSnake !== undefined;
   }
 }

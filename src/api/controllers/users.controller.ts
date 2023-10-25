@@ -1,15 +1,15 @@
 import { BaseController } from "./base.controller";
-import { Request, Response } from "express";
 import User from "api/models/entities/User.entity";
 import { UsersService } from "api/services/users.service";
 import { BodyToCamelCase } from "@decorators/SnakeToCamel.decorator";
 import { CreateUserDTO } from "api/validation/DTO/user.dto";
 import validationMiddleware from "middlewares/validation.middleware";
-import { CamelCaseObj, SnakeCaseObj } from "@lib/validation/types";
+import { CamelCaseObj } from "@lib/validation/types";
 import { logger } from "@lib/debug/logger";
 import { HttpException } from "api/errors/HttpException";
 import { StatusCodeEnum } from "api/enum/api.enum";
 
+import { Request, Response } from "express";
 import {
   Get,
   JsonController,
@@ -28,7 +28,10 @@ class UsersController extends BaseController {
   }
 
   @Get("/")
-  public async getUsers(@Req() _: Request, @Res() res: Response) {
+  public async getUsers(
+    @Req() _: Request,
+    @Res() res: Response
+  ): Promise<Response> {
     const users = await this.usersService.getAllUsers();
 
     return this.responseSuccess<Array<User>>(users, "Success", res);
@@ -40,15 +43,11 @@ class UsersController extends BaseController {
     @BodyToCamelCase() body: CamelCaseObj<CreateUserDTO>,
     @Req() _: Request,
     @Res() res: Response
-  ) {
+  ): Promise<Response> {
     try {
       const user = await this.usersService.createUser(body);
 
-      return this.responseSuccess<SnakeCaseObj<User>>(
-        user.toJson(),
-        "Success",
-        res
-      );
+      return this.responseSuccess<User>(user, "Success", res);
     } catch (error: unknown) {
       logger.error(error);
 

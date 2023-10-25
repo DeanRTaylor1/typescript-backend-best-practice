@@ -1,20 +1,21 @@
-import { SnakeCaseObj } from "@lib/validation/types";
-import { convertKeysToSnakeCase } from "@lib/validation/utils";
 import { UserRoleEnum, UserStatusEnum } from "api/enum/users.enum";
 import {
   AutoIncrement,
   Column,
-  Model,
   PrimaryKey,
   Table,
   Default,
   DataType,
+  Model,
 } from "sequelize-typescript";
+import BaseEntity from "./types/Base.entity";
+import { convertKeysToSnakeCase } from "@lib/validation/utils";
+import { SnakeCaseObj } from "@lib/validation/types";
 
 @Table({
   tableName: "users",
 })
-export default class User extends Model<User> {
+export default class User extends Model<User> implements BaseEntity<User> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
@@ -49,7 +50,7 @@ export default class User extends Model<User> {
   @Column(DataType.DATE)
   updatedAt: Date;
 
-  toJson(): SnakeCaseObj<User> {
-    return convertKeysToSnakeCase(this.get());
+  toSnake() {
+    return convertKeysToSnakeCase(this.get()) as SnakeCaseObj<this>;
   }
 }
