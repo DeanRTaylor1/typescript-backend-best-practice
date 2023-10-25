@@ -33,6 +33,10 @@ const env = {
   config: {
     enableSnakeCase: getOsEnv("SNAKE_CASE") === "true",
   },
+  auth: {
+    jwtSecret: getOsEnv("JWT_SECRET"),
+    expiresIn: getOsEnv("JWT_EXPIRES"),
+  },
 };
 
 export { env };

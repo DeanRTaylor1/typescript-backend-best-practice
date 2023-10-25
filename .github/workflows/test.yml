@@ -32,7 +32,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "20"
 
       - name: Delete yarn.lock
         run: rm -f yarn.lock || true
@@ -70,3 +70,5 @@ jobs:
           LOG_LEVEL: debug
           PORT: 3000
           SNAKE_CASE: true
+          JWT_SECRET: SECRET
+          JWT_EXPIRES: 12h
