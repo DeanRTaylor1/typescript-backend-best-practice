@@ -3,6 +3,12 @@ import { ApiResponse } from "api/types/response.interface";
 import { Response } from "express";
 import BaseEntity from "api/models/entities/types/Base.entity";
 import { env } from "@env";
+import { Model } from "sequelize-typescript";
+import { Sanitized, TaintedFieldsSet } from "./types/controller.types";
+
+type ObjectOnly<T> = T extends object
+  ? T
+  : "Error: Expected an object, but received a primitive type";
 
 export class BaseController {
   protected code: StatusCodeEnum = StatusCodeEnum.OK;
@@ -49,34 +55,70 @@ export class BaseController {
     }
   }
 
-  public responseSuccess<T>(data: T, message: string, res: Response): Response {
+  public responseSuccess<T>({
+    data,
+    message,
+    res,
+  }: {
+    data: ObjectOnly<T>;
+    message: string;
+    res: Response;
+  }): Response {
     return this.setCode(StatusCodeEnum.OK)
       .setData(data)
       .setMessage(message)
       .getResponse<T>(res, true);
   }
 
-  public responseError(
-    res: Response,
-    message: string = "An error occurred",
-    statusCode: StatusCodeEnum = StatusCodeEnum.INTERNAL_SERVER_ERROR
-  ): Response {
+  public responseError({
+    res,
+    message = "An error occurred",
+    statusCode = StatusCodeEnum.INTERNAL_SERVER_ERROR,
+  }: {
+    res: Response;
+    message: string;
+    statusCode: StatusCodeEnum;
+  }): Response {
     return this.setCode(statusCode)
       .setData(null)
       .setMessage(message)
       .getResponse<null>(res, false);
   }
 
-  private transformData<T>(data: T | BaseEntity<T>[]): unknown {
-    if (!this.enableSnakeCase) return data;
+  private transformData<T>(
+    data: T | BaseEntity<T>[]
+  ): Sanitized<T> | Array<Sanitized<T>> {
+    if (!this.enableSnakeCase) {
+      if (data instanceof Model) {
+        return this.sanitizeData(data.get());
+      }
 
-    if (Array.isArray(data)) {
-      return data.map((item) =>
-        this.isBaseEntity(item) ? item.toSnake() : item
-      );
+      return this.sanitizeData(data);
     }
 
-    return this.isBaseEntity(data) ? data.toSnake() : data;
+    if (Array.isArray(data)) {
+      return data.map((item) => {
+        const resData = this.isBaseEntity(item) ? item.toSnake() : item;
+
+        return this.sanitizeData(resData);
+      });
+    }
+
+    const resData = this.isBaseEntity(data) ? data.toSnake() : data;
+
+    return this.sanitizeData(resData);
+  }
+
+  private sanitizeData<T>(data: T): Sanitized<T> {
+    const sanitizedData: T = { ...data };
+
+    for (const key of Object.keys(data)) {
+      if (TaintedFieldsSet.has(key)) {
+        delete sanitizedData[key];
+      }
+    }
+
+    return sanitizedData as Sanitized<T>;
   }
 
   private isBaseEntity<T>(object: unknown): object is BaseEntity<T> {

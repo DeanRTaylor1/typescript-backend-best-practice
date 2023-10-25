@@ -5,6 +5,9 @@ import { BodyToCamelCase } from "@decorators/SnakeToCamel.decorator";
 import { CreateUserDTO, LoginDTO } from "api/validation/DTO/user.dto";
 import validationMiddleware from "middlewares/validation.middleware";
 import { CamelCaseObj } from "@lib/validation/types";
+import { HandleErrors } from "@decorators/errorHandler.decorator";
+import { GetPagination, Pagination } from "@decorators/pagination.decorator";
+import { AuthService } from "@services/auth.service";
 
 import { Request, Response } from "express";
 import {
@@ -17,12 +20,8 @@ import {
   UseBefore,
 } from "routing-controllers";
 import { Service } from "typedi";
-import { HandleErrors } from "@decorators/errorHandler.decorator";
-import { GetPagination, Pagination } from "@decorators/pagination.decorator";
 import authMiddleware from "middlewares/auth.middleware";
-import { AuthService } from "@services/auth.service";
-import { HttpException } from "api/errors/HttpException";
-import { StatusCodeEnum } from "api/enum/api.enum";
+import { RequestWithUser } from "api/types/request.interface";
 
 @JsonController("/users")
 @Service()
@@ -39,12 +38,17 @@ class UsersController extends BaseController {
   @HandleErrors
   public async getUsers(
     @GetPagination() { skip, limit }: Pagination,
-    @Req() _: Request,
+    @Req() { user }: RequestWithUser,
     @Res() res: Response
   ): Promise<Response> {
+    console.log({ user });
     const users = await this.usersService.getAllUsers({ skip, limit });
 
-    return this.responseSuccess<Array<User>>(users, "Success", res);
+    return this.responseSuccess<Array<User>>({
+      data: users,
+      message: "Success",
+      res,
+    });
   }
 
   @Post("/")
@@ -57,7 +61,7 @@ class UsersController extends BaseController {
   ): Promise<Response> {
     const user = await this.usersService.createUser(body);
 
-    return this.responseSuccess<User>(user, "Success", res);
+    return this.responseSuccess<User>({ data: user, message: "Success", res });
   }
 
   @Post("/login")
@@ -68,22 +72,13 @@ class UsersController extends BaseController {
     @Req() _: Request,
     @Res() res: Response
   ): Promise<Response> {
-    const user = await this.usersService.getUserByEmail(email);
-    const isValid = await this.authService.compare(
-      user.hashedPassword,
-      password
-    );
+    const token = await this.usersService.loginUser(email, password);
 
-    if (!isValid) {
-      throw new HttpException(StatusCodeEnum.FORBIDDEN, "Invalid password");
-    }
-
-    const token = await this.authService.generateJWT({
-      userId: user.id,
-      email: user.email,
+    return this.responseSuccess<{ token: string }>({
+      data: { token },
+      message: "Success",
+      res,
     });
-
-    return this.responseSuccess<string>(token, "Success", res);
   }
 }
 

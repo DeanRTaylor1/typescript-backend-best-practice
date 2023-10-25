@@ -20,6 +20,10 @@
             "error",
             "double"
         ],
+        "max-params": [
+            "error",
+            2
+        ],
         "semi": [
             "error",
             "always"
@@ -38,6 +42,17 @@
     "ignorePatterns": [
         "src/databases/**",
         "jest.config.js",
-        "src/lib/__tests__/**"
+        "src/lib/__tests__/**",
+        "scripts/**"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "*.controller.ts"
+            ],
+            "rules": {
+                "max-params": "off"
+            }
+        }
     ]
 }
