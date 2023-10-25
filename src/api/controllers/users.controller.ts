@@ -5,9 +5,6 @@ import { BodyToCamelCase } from "@decorators/SnakeToCamel.decorator";
 import { CreateUserDTO } from "api/validation/DTO/user.dto";
 import validationMiddleware from "middlewares/validation.middleware";
 import { CamelCaseObj } from "@lib/validation/types";
-import { logger } from "@lib/debug/logger";
-import { HttpException } from "api/errors/HttpException";
-import { StatusCodeEnum } from "api/enum/api.enum";
 
 import { Request, Response } from "express";
 import {
@@ -19,6 +16,8 @@ import {
   UseBefore,
 } from "routing-controllers";
 import { Service } from "typedi";
+import { HandleErrors } from "@decorators/errorHandler.decorator";
+import { GetPagination, Pagination } from "@decorators/pagination.decorator";
 
 @JsonController("/users")
 @Service()
@@ -28,34 +27,28 @@ class UsersController extends BaseController {
   }
 
   @Get("/")
+  @HandleErrors
   public async getUsers(
+    @GetPagination() { skip, limit }: Pagination,
     @Req() _: Request,
     @Res() res: Response
   ): Promise<Response> {
-    const users = await this.usersService.getAllUsers();
+    const users = await this.usersService.getAllUsers({ skip, limit });
 
     return this.responseSuccess<Array<User>>(users, "Success", res);
   }
 
   @Post("/")
   @UseBefore(validationMiddleware(CreateUserDTO))
+  @HandleErrors
   public async createUser(
     @BodyToCamelCase() body: CamelCaseObj<CreateUserDTO>,
     @Req() _: Request,
     @Res() res: Response
   ): Promise<Response> {
-    try {
-      const user = await this.usersService.createUser(body);
+    const user = await this.usersService.createUser(body);
 
-      return this.responseSuccess<User>(user, "Success", res);
-    } catch (error: unknown) {
-      logger.error(error);
-
-      throw new HttpException(
-        StatusCodeEnum.INTERNAL_SERVER_ERROR,
-        "Something went wrong."
-      );
-    }
+    return this.responseSuccess<User>(user, "Success", res);
   }
 }
 

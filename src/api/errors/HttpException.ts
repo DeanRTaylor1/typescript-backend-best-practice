@@ -5,9 +5,10 @@ export class HttpException<T> extends HttpError {
   public data?: T;
 
   constructor(status: number, message: string, data?: T) {
-    super(status);
+    super(status, message);
     this.status = status;
     this.message = message;
     this.data = data;
+    Object.setPrototypeOf(this, HttpException.prototype);
   }
 }

@@ -30,6 +30,9 @@ const env = {
     dialect: getOsEnv("DB_DIALECT"),
     port: getOsEnv("DB_PORT"),
   },
+  config: {
+    enableSnakeCase: getOsEnv("SNAKE_CASE") === "true",
+  },
 };
 
 export { env };

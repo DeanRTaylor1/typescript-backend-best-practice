@@ -1,4 +1,4 @@
-import { UserRoleEnum } from "api/enum/users.enum";
+import { UserRoleEnum, UserStatusEnum } from "api/enum/users.enum";
 import {
   IsEmail,
   IsEnum,
@@ -30,4 +30,8 @@ export class CreateUserDTO {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @IsOptional()
+  @IsEnum(UserStatusEnum)
+  status: UserStatusEnum;
 }

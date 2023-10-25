@@ -1,17 +1,17 @@
 import { StatusCodeEnum } from "api/enum/api.enum";
 import { HttpException } from "api/errors/HttpException";
-import {  plainToInstance, ClassConstructor } from "class-transformer";
+import { plainToInstance, ClassConstructor } from "class-transformer";
 import { validate, ValidationError } from "class-validator";
-import { RequestHandler } from "express";
+import { Request, RequestHandler, Response } from "express";
 
 function validationMiddleware<T extends object>(
   type: ClassConstructor<T>,
   value: string | "body" | "query" | "params" = "body",
   skipMissingProperties = false,
   whitelist = true,
-  forbidNonWhitelisted = true,
+  forbidNonWhitelisted = true
 ): RequestHandler {
-  return (req, res, next) => {
+  return (req: Request, _res: Response, next) => {
     validate(plainToInstance(type, req[value]), {
       skipMissingProperties,
       whitelist,
