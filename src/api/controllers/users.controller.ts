@@ -18,6 +18,7 @@ import {
 import { Service } from "typedi";
 import { HandleErrors } from "@decorators/errorHandler.decorator";
 import { GetPagination, Pagination } from "@decorators/pagination.decorator";
+import authMiddleware from "middlewares/auth.middleware";
 
 @JsonController("/users")
 @Service()
@@ -27,6 +28,7 @@ class UsersController extends BaseController {
   }
 
   @Get("/")
+  @UseBefore(authMiddleware())
   @HandleErrors
   public async getUsers(
     @GetPagination() { skip, limit }: Pagination,

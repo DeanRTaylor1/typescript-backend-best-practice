@@ -24,6 +24,10 @@ class UsersService {
     return this.usersRepository.create(newUser);
   }
 
+  public async findUserById(userId: number): Promise<User> {
+    return this.usersRepository.findById(userId);
+  }
+
   private async hashUserPassword(
     userDTO: CamelCaseObj<CreateUserDTO>
   ): Promise<ICreateAttributes<User>> {
