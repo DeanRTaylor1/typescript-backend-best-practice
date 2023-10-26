@@ -10,11 +10,8 @@ const getOsEnv = (key: string): string => {
   return process.env[key];
 };
 
-// const validateEnv = () => {
-//   cleanEnv(process.env, {
-//     NODE_ENV: str(),
-//     port: port(),
-//   });
-// };
+function getOsEnvOptional(key: string): string | undefined {
+  return process.env[key];
+}
 
-export { getOsEnv };
+export { getOsEnv, getOsEnvOptional };

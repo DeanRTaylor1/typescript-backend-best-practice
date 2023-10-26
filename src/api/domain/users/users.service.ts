@@ -2,7 +2,7 @@ import { Pagination } from "@api/core/decorators/pagination.decorator";
 import UsersRepository from "@api/domain/users/users.repository";
 import User from "@api/models/entities/User.entity";
 import { CreateUserDTO } from "@api/domain/users/user.dto";
-import { AuthService } from "@lib/services/auth.service";
+import { AuthService } from "@services/auth/auth.service";
 import { ICreateAttributes } from "@api/models/entities/types/entity.types";
 import { StatusCodeEnum } from "@api/core/enum/api.enum";
 import { HttpException } from "@api/core/errors/HttpException";

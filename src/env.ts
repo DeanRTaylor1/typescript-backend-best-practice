@@ -1,5 +1,5 @@
 import path from "path";
-import { getOsEnv } from "@lib/env/utils";
+import { getOsEnv, getOsEnvOptional } from "@lib/env/utils";
 import * as dotenv from "dotenv";
 
 const envPath = path.join(
@@ -36,6 +36,15 @@ const env = {
   auth: {
     jwtSecret: getOsEnv("JWT_SECRET"),
     expiresIn: getOsEnv("JWT_EXPIRES"),
+  },
+  cache: {
+    type: getOsEnv("CACHE_TYPE"),
+    redis: {
+      host: getOsEnv("REDIS_HOST"),
+      password: getOsEnvOptional("REDIS_PASSWORD"),
+      username: getOsEnvOptional("REDIS_USERNAME"),
+      port: getOsEnv("REDIS_PORT"),
+    },
   },
 };
 
