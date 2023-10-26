@@ -5,6 +5,8 @@ import User from "api/models/entities/User.entity";
 import { Service } from "typedi";
 import { ModelCtor } from "sequelize-typescript";
 import { ICreateAttributes } from "api/models/entities/types/entity.types";
+import { ClearCache } from "@services/cache/decorators/ClearCache.decorator";
+import { CacheKeyEnum } from "@services/cache/types/cache.enum";
 
 @Service()
 class UsersRepository extends BaseRepository<User> {
@@ -12,6 +14,7 @@ class UsersRepository extends BaseRepository<User> {
     super(User);
   }
 
+  @ClearCache(() => CacheKeyEnum.USER_CACHE)
   async create(user: ICreateAttributes<User>): Promise<User> {
     return this.model.create(user);
   }

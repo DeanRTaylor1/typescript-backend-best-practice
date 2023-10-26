@@ -10,7 +10,7 @@ import {
   GetPagination,
   Pagination,
 } from "@core/decorators/pagination.decorator";
-import { AuthService } from "@lib/services/auth.service";
+import { AuthService } from "@services/auth/auth.service";
 import authMiddleware from "@middlewares/auth.middleware";
 
 import { Request, Response } from "express";

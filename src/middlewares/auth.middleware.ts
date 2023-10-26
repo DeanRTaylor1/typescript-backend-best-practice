@@ -1,5 +1,5 @@
 import { StatusCodeEnum } from "api/core/enum/api.enum";
-import { AuthService } from "@lib/services/auth.service";
+import { AuthService } from "@services/auth/auth.service";
 import { UsersService } from "api/domain/users/users.service";
 import { HttpException } from "api/core/errors/HttpException";
 import { RequestWithUser } from "api/core/types/request.interface";
