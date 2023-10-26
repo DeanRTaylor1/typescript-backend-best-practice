@@ -10,6 +10,8 @@ const envPath = path.join(
 dotenv.config({ path: envPath });
 
 const env = {
+  appPath: __dirname,
+  apiUrl: getOsEnv("API_URL"),
   nodeEnv: process.env.NODE_ENV || "development",
   isProd: process.env.NODE_ENV === "production",
   isDev: process.env.NODE_ENV === "development",
@@ -45,6 +47,10 @@ const env = {
       username: getOsEnvOptional("REDIS_USERNAME"),
       port: getOsEnv("REDIS_PORT"),
     },
+  },
+  upload: {
+    type: getOsEnv("UPLOAD_TYPE"),
+    disksDir: getOsEnv("DISKS_DIR") || "/public/uploads",
   },
 };
 
