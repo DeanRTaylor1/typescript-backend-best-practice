@@ -1,6 +1,6 @@
 import { logger } from "@lib/debug/logger";
-import { StatusCodeEnum } from "api/enum/api.enum";
-import { HttpException } from "api/errors/HttpException";
+import { StatusCodeEnum } from "api/core/enum/api.enum";
+import { HttpException } from "api/core/errors/HttpException";
 
 export function HandleErrors<T>(
   target: T,
@@ -21,10 +21,10 @@ export function HandleErrors<T>(
         throw error;
       } else {
         logger.error(error);
-        throw new HttpException(
-          StatusCodeEnum.INTERNAL_SERVER_ERROR,
-          "Something went wrong."
-        );
+        throw new HttpException({
+          status: StatusCodeEnum.INTERNAL_SERVER_ERROR,
+          message: "Something went wrong.",
+        });
       }
     }
   };

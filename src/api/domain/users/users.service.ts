@@ -1,13 +1,14 @@
-import { Pagination } from "@decorators/pagination.decorator";
-import { CamelCaseObj } from "@lib/validation/types";
-import UsersRepository from "@repositories/users.repository";
-import User from "api/models/entities/User.entity";
-import { CreateUserDTO } from "api/validation/DTO/user.dto";
+import { Pagination } from "@api/core/decorators/pagination.decorator";
+import UsersRepository from "@api/domain/users/users.repository";
+import User from "@api/models/entities/User.entity";
+import { CreateUserDTO } from "@api/domain/users/user.dto";
+import { AuthService } from "@lib/services/auth.service";
+import { ICreateAttributes } from "@api/models/entities/types/entity.types";
+import { StatusCodeEnum } from "@api/core/enum/api.enum";
+import { HttpException } from "@api/core/errors/HttpException";
+import { CamelCaseObj } from "@api/core/types/case.types";
+
 import { Service } from "typedi";
-import { AuthService } from "./auth.service";
-import { ICreateAttributes } from "api/models/entities/types/entity.types";
-import { StatusCodeEnum } from "api/enum/api.enum";
-import { HttpException } from "api/errors/HttpException";
 
 @Service()
 class UsersService {
@@ -46,7 +47,10 @@ class UsersService {
     });
 
     if (!isValid) {
-      throw new HttpException(StatusCodeEnum.FORBIDDEN, "Invalid password");
+      throw new HttpException({
+        status: StatusCodeEnum.FORBIDDEN,
+        message: "Invalid password",
+      });
     }
 
     return this.authService.generateJWT({

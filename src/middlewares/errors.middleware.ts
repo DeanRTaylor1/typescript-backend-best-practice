@@ -1,6 +1,6 @@
 import { env } from "@env";
-import { HttpException } from "api/errors/HttpException";
-import { ApiResponse } from "api/types/response.interface";
+import { HttpException } from "api/core/errors/HttpException";
+import { ApiResponse } from "api/core/types/response.interface";
 import { NextFunction, Request, Response } from "express";
 
 const errorMiddleware = (

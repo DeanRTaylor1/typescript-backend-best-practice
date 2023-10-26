@@ -1,4 +1,4 @@
-import { UserRoleEnum, UserStatusEnum } from "api/enum/users.enum";
+import { UserRoleEnum, UserStatusEnum } from "api/domain/users/users.enum";
 import {
   IsEmail,
   IsEnum,

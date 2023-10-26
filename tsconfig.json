@@ -31,6 +31,9 @@
     "baseUrl": "src",
     "skipLibCheck": true,
     "paths": {
+      "@api/*": [
+        "api/*"
+      ],
       "@config/*": [
         "config/*"
       ],
@@ -40,32 +43,26 @@
       "@databases/*": [
         "databases/*"
       ],
-      "@enum/*": [
-        "enum/*"
+      "@core/*": [
+        "api/core/*"
       ],
-      "@dtos/*": [
-        "http/dtos/*"
-      ],
-      "@repositories/*": [
-        "api/repositories/*"
-      ],
-      "@exceptions/*": [
-        "exceptions/*"
+      "@domain/*": [
+        "api/domain/*"
       ],
       "@interfaces/*": [
         "interfaces/*"
       ],
       "@middlewares/*": [
-        "api/middlewares/*"
+        "middlewares/*"
       ],
       "@models/*": [
-        "src/databases/models/*"
+        "api//models/*"
       ],
       "@services/*": [
-        "api/services/*"
+        "lib/services/*"
       ],
       "@utils/*": [
-        "utils/*"
+        "/lib/utils/*"
       ],
       "@env": [
         "env"

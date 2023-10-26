@@ -2,7 +2,7 @@ import { Service } from "typedi";
 import { ModelCtor, Model } from "sequelize-typescript";
 import { WhereOptions } from "sequelize";
 import { ICreateAttributes } from "api/models/entities/types/entity.types";
-import { Pagination } from "@decorators/pagination.decorator";
+import { Pagination } from "api/core/decorators/pagination.decorator";
 
 @Service()
 export abstract class BaseRepository<M extends Model> {

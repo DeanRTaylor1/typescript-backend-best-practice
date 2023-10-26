@@ -1,5 +1,5 @@
-import { StatusCodeEnum } from "api/enum/api.enum";
-import { HttpException } from "api/errors/HttpException";
+import { StatusCodeEnum } from "api/core/enum/api.enum";
+import { HttpException } from "api/core/errors/HttpException";
 import { plainToInstance, ClassConstructor } from "class-transformer";
 import { validate, ValidationError } from "class-validator";
 import { Request, RequestHandler, Response } from "express";
@@ -32,7 +32,12 @@ function validationMiddleware<T extends object>(
           })
           .join(", ");
 
-        next(new HttpException(StatusCodeEnum.VALIDATION_ERROR, message));
+        next(
+          new HttpException({
+            status: StatusCodeEnum.VALIDATION_ERROR,
+            message,
+          })
+        );
       } else {
         next();
       }

@@ -1,15 +1,15 @@
-import { API_RES, StatusCodeEnum } from "api/enum/api.enum";
-import { ApiResponse } from "api/types/response.interface";
-import { Response } from "express";
-import BaseEntity from "api/models/entities/types/Base.entity";
+import { API_RES, StatusCodeEnum } from "@core/enum/api.enum";
+import { ApiResponse } from "@core/types/response.interface";
+import BaseEntity from "@models/entities/types/Base.entity";
 import { env } from "@env";
-import { Model } from "sequelize-typescript";
 import {
   ObjectOnly,
   Sanitized,
   TaintedFieldsSet,
 } from "./types/controller.types";
 
+import { Model } from "sequelize-typescript";
+import { Response } from "express";
 export class BaseController {
   protected code: StatusCodeEnum = StatusCodeEnum.OK;
   protected data: unknown;
