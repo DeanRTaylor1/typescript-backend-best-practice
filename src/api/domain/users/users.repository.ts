@@ -1,5 +1,5 @@
-import { BaseRepository } from "./base.repository";
-import { ModelContainer } from "api/decorators/models.decorator";
+import { BaseRepository } from "../base/base.repository";
+import { ModelContainer } from "api/core/decorators/models.decorator";
 
 import User from "api/models/entities/User.entity";
 import { Service } from "typedi";

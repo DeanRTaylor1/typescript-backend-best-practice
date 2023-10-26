@@ -48,7 +48,9 @@
     "overrides": [
         {
             "files": [
-                "*.controller.ts"
+                "*.controller.ts",
+                "src/**/decorators/**",
+                "src/**/middlewares/**"
             ],
             "rules": {
                 "max-params": "off"

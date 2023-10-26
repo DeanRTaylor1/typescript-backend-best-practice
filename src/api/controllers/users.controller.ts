@@ -1,13 +1,17 @@
 import { BaseController } from "./base.controller";
-import User from "api/models/entities/User.entity";
-import { UsersService } from "api/services/users.service";
-import { BodyToCamelCase } from "@decorators/SnakeToCamel.decorator";
-import { CreateUserDTO, LoginDTO } from "api/validation/DTO/user.dto";
-import validationMiddleware from "middlewares/validation.middleware";
-import { CamelCaseObj } from "@lib/validation/types";
-import { HandleErrors } from "@decorators/errorHandler.decorator";
-import { GetPagination, Pagination } from "@decorators/pagination.decorator";
-import { AuthService } from "@services/auth.service";
+import User from "@models/entities/User.entity";
+import { UsersService } from "@domain/users/users.service";
+import { BodyToCamelCase } from "@core/decorators/SnakeToCamel.decorator";
+import { CreateUserDTO, LoginDTO } from "@domain/users/user.dto";
+import validationMiddleware from "@middlewares/validation.middleware";
+import { CamelCaseObj } from "@core/types/case.types";
+import { HandleErrors } from "@core/decorators/errorHandler.decorator";
+import {
+  GetPagination,
+  Pagination,
+} from "@core/decorators/pagination.decorator";
+import { AuthService } from "@lib/services/auth.service";
+import authMiddleware from "@middlewares/auth.middleware";
 
 import { Request, Response } from "express";
 import {
@@ -20,8 +24,6 @@ import {
   UseBefore,
 } from "routing-controllers";
 import { Service } from "typedi";
-import authMiddleware from "middlewares/auth.middleware";
-import { RequestWithUser } from "api/types/request.interface";
 
 @JsonController("/users")
 @Service()
@@ -38,10 +40,9 @@ class UsersController extends BaseController {
   @HandleErrors
   public async getUsers(
     @GetPagination() { skip, limit }: Pagination,
-    @Req() { user }: RequestWithUser,
+    @Req() _: Request,
     @Res() res: Response
   ): Promise<Response> {
-    console.log({ user });
     const users = await this.usersService.getAllUsers({ skip, limit });
 
     return this.responseSuccess<Array<User>>({

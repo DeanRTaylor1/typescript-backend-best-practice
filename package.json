@@ -70,7 +70,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint --fix",
+      "eslint",
       "git add"
     ],
     ".github/workflows/*.yml": "eslint"

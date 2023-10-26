@@ -1,4 +1,4 @@
-import { SnakeCaseObj } from "@lib/validation/types";
+import { SnakeCaseObj } from "@api/core/types/case.types";
 import { convertKeysToSnakeCase } from "@lib/validation/utils";
 import { Model } from "sequelize-typescript";
 
