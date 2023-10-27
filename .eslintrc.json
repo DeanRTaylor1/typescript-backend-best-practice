@@ -50,7 +50,8 @@
             "files": [
                 "*.controller.ts",
                 "src/**/decorators/**",
-                "src/**/middlewares/**"
+                "src/**/middlewares/**",
+                "src/lib/upload/utils.ts"
             ],
             "rules": {
                 "max-params": "off"
