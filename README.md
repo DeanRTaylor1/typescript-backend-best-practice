@@ -1,134 +1,366 @@
-### `typescript-backend-best-practice`
-
-This is a TypeScript-based backend boilerplate designed to follow best practices for scalable and maintainable architecture. The boilerplate utilizes Express.js for handling HTTP requests and integrates various tools and libraries to enhance development productivity and code quality.
+# `typescript-express-oop-boilerplate`
 
 ---
 
-#### Main Features:
+This is a TypeScript-based backend boilerplate designed to follow best practices
+for scalable and maintainable architecture. The boilerplate utilizes Express.js
+for handling HTTP requests and utilises common design principles. The main
+purpose is to avoid the long setup of an api and just let you focus on
+implementing routes.
 
-- **TypeScript Support**: The project is set up with TypeScript for static type checking and modern JavaScript features.
-- **Express.js**: Utilizing Express.js as the web application framework to handle HTTP requests.
-- **Object-Oriented Programming (OOP)**: Following OOP principles for a modular and maintainable codebase.
-- **Routing-Controllers**: Using `routing-controllers` library to simplify routing and controller management with decorators.
-- **Validation and Transformation**: Integrated `class-validator` and `class-transformer` for validating and transforming data at runtime.
-- **Environment Variable Validation**: Utilizing `envalid` to validate and clean environment variables to ensure the app runs with the required settings.
-- **Database Integration**: Configured with Sequelize for ORM, supporting PostgreSQL out of the box.
-- **Docker Support**: Docker scripts included for easy setup of development and test databases.
-- **Logging**: Integrated with `winston` for logging, including daily log rotation.
-- **Authentication**: Setup to use JSON Web Tokens (JWT) for handling authentication.
-- **File Uploads**: Supports file uploads with `multer`.
-- **Error Handling**: Custom error handling to ensure consistent error responses.
-- **Development and Production Ready**: Different scripts and configurations for development and production environments.
-- **Linting and Formatting**: Enforced code style and quality using ESLint and Prettier.
-- **Testing**: Configured with Jest for running tests, with support for TypeScript.
-- **Continuous Integration**: Ready to be integrated with CI/CD pipelines.
-- **Husky for Git Hooks**: Utilizing Husky to enforce quality checks before commits.
+# How to Get Started
+
+This TypeScript backend project is designed to be run completely within Docker
+containers, simplifying the setup and ensuring consistency across different
+environments. Below are the steps to get started:
+
+## Prerequisites
+
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Yarn](https://yarnpkg.com/getting-started/install) (for managing Node.js
+  packages)
+
+## Installation and Setup
+
+1. **Clone the Repository**:
+
+2. **Install Node.js Dependencies**:
+   - Although the project runs in Docker, Yarn is used for script execution.
+   ```sh
+   yarn install
+   ```
+
+## Development
+
+1. **Start the Development Server**:
+
+   ```sh
+   yarn dev
+   ```
+
+   This command will start the entire service using Docker Compose, including
+   any dependent services defined in your `docker-compose.yaml` file.
+
+2. **Access the Application**:
+   - Once the containers are up and running, the API will be set up to listen on
+     port 3000.
+   - You can access the API by navigating to
+     [http://localhost:3000](http://localhost:3000) in your web browser or using
+     a tool like [Postman](https://www.postman.com/) to make HTTP requests.
 
 ---
 
-#### Scripts:
+## Testing
 
-- `dev:docker`: Setup database and start the application in development mode with Docker.
-- `lint`: Run ESLint for static code analysis.
-- `db:setup`: Run database migrations.
-- `dev`: Start the application in development mode using Docker Compose.
-- `postgres`: Start a PostgreSQL Docker container.
-- `createdb`: Create the test database.
-- `dropdb`: Drop the test database.
-- `test-jest`: Run tests using Jest.
-- `cleanup`: Stop and remove the PostgreSQL Docker container.
-- `test`: Full test script including database setup, running tests, and cleanup.
-- `build`: Compile TypeScript code and resolve module aliases.
+1. **Run Tests**:
+   ```sh
+   yarn test
+   ```
+   This will run all tests inside Docker containers, ensuring consistency across
+   different environments.
 
-### ESLint Configuration and Lint Rules
+## Building the Project
 
-ESLint is a static code analysis tool used for identifying problematic patterns in JavaScript and TypeScript code. Below is a description of the ESLint configuration provided:
+1. **Build the Project**:
+   ```sh
+   yarn build
+   ```
+   This will build the project and output the compiled files to the `dist`
+   directory.
 
-#### Environment:
+---
 
-- **Browser**: The environment is set to `browser`, indicating that the global variables defined by browsers are pre-defined.
-- **ES2021**: ECMAScript 2021 globals and syntax features are enabled.
+#### Overview:
 
-#### Extends:
+# Controller Implementation
 
-- **ESLint Recommended**: The configuration extends the set of recommended ESLint rules.
-- **TypeScript ESLint Recommended**: Recommended rules from the `@typescript-eslint` plugin are included.
+The project follows a structured approach to handle HTTP requests, utilizing a
+base controller for common functionalities and specific controllers for
+domain-related actions. Below is an in-depth look at how this is achieved:
 
-#### Parser:
+## BaseController
 
-- The parser is set to `@typescript-eslint/parser`, allowing ESLint to parse TypeScript code.
+The `BaseController` class provides a set of utility methods to standardize the
+response structure, handle different response types, and sanitize data before
+sending it to the client. It also includes error handling and data
+transformation functionalities.
 
-#### Parser Options:
+- **setCode, setData, setMessage, setTypeRes**: These methods allow for fluent
+  configuration of the response.
+- **getResponse**: Based on the previously set configurations, this method sends
+  the response back to the client.
+- **responseSuccess, responseError**: These are higher-level methods to quickly
+  send success or error responses.
+- **transformData**: Transforms the data based on the application's settings,
+  converting entities to their snake_case representation if necessary, and
+  sanitizing the data to remove any sensitive information.
+- **sanitizeData**: Removes any tainted fields from the data to prevent
+  sensitive information leakage.
 
-- **ECMA Version**: Set to "latest" to use the latest ECMAScript version.
-- **Source Type**: Set to "module", indicating that the code should be treated as an ECMAScript module.
+## UsersController
 
-#### Plugins:
+The `UsersController` extends the `BaseController` and provides specific
+endpoints related to user functionalities to demonstrate how to implement a
+basic endpoint.
 
-- **@typescript-eslint**: Adds TypeScript specific linting rules to ESLint.
+- **getUsers**: Fetches a list of users with pagination. It utilizes the
+  `@GetPagination` decorator to easily extract pagination parameters from the
+  request query and the `@HandleErrors` decorator for standardized error
+  handling.
+- **createUser**: Handles user creation. It uses the `@BodyToCamelCase`
+  decorator to transform the request body keys to camelCase, and the
+  `@HandleErrors` decorator for error handling.
+- **login**: Manages user login, returning a token upon successful
+  authentication.
 
-#### Rules:
+### Decorators Usage
 
-- **Quotes**: Enforce the consistent use of double quotes.
-- **Max Params**: Functions can have at most 2 parameters.
-- **Semi**: Enforce the consistent use of semicolons.
-- **@typescript-eslint/no-unused-vars**: Rules for handling unused variables and arguments in TypeScript.
+- **@HandleErrors**: Applied to various methods to ensure any thrown errors are
+  caught and handled properly.
+- **@GetPagination**: Used in the `getUsers` method to extract pagination
+  parameters from the request query.
+- **@BodyToCamelCase**: Applied in the `createUser` method to transform the
+  request body keys to camelCase.
 
-#### Ignore Patterns:
+### Middleware and Services Integration
 
-Files and directories to be ignored by ESLint:
+- **@UseBefore**: This routing-controllers decorator is used to apply
+  middlewares to specific routes. For example, `authMiddleware` is used to
+  protect the `getUsers` endpoint.
+- **validationMiddleware**: Applied to validate the request body against DTOs
+  (Data Transfer Objects).
+- **UsersService, AuthService**: Services are injected into the controller to
+  handle business logic, interacting with the database and performing other
+  necessary operations.
 
-- Database related files (`src/databases/**`)
-- Jest configuration file (`jest.config.js`)
-- Test files in the `src/lib/__tests__` directory
-- Scripts directory (`scripts/**`)
+---
 
-#### Overrides:
+This structure ensures a clean separation of concerns, with the `BaseController`
+handling common response-related tasks, and specific controllers focusing on
+domain-related actions. The use of decorators and middlewares further
+streamlines the code, making it more readable and maintainable.
 
-- **Files**: Applies specific rules to controller files (`*.controller.ts`).
-- **Rules**: `max-params` rule is turned off for controller files.
+---
 
-### BaseController Class
+# Middleware
 
-#### Properties:
+This project includes a variety of decorators and utilities to enhance the
+development experience and maintain code quality. Below are detailed
+explanations of some of the key features:
 
-- `code`: HTTP status code for the response. Default is `200 OK`.
-- `data`: Data to be sent in the response.
-- `message`: A message accompanying the response. Default is `"Success"`.
-- `typeRes`: Type of the response, can be either JSON or SEND. Default is JSON.
-- `enableSnakeCase`: Flag to enable snake case transformation for the response data. The value is fetched from the environment configuration.
+## 1. Error Handling
 
-#### Methods:
+The `HandleErrors` decorator is designed to wrap around class methods to provide
+a standardized error handling mechanism. It captures any thrown errors, logs
+them, and rethrows them if they are instances of `HttpException`. For all other
+error types, it logs the error and throws a new `HttpException` with a generic
+internal server error message.
 
-- `setCode`, `setData`, `setMessage`, `setTypeRes`: Fluent API methods for setting properties of the controller.
-- `getResponse`: Sends the response with the current properties of the controller.
-- `responseSuccess`: Utility method for sending a successful response. It sets the HTTP status code to `200`, and marks the response as successful.
-- `responseError`: Utility method for sending an error response. It sets the HTTP status code to a provided value or `500` by default, and marks the response as unsuccessful.
-- `transformData`: Transforms the data to be sent in the response. If `enableSnakeCase` is true, it converts the data to snake case. It also sanitizes the data by removing tainted fields.
-- `sanitizeData`: Removes tainted fields from the data.
-- `isBaseEntity`: Checks if the provided object is an instance of `BaseEntity`.
+- **Usage**: Apply `@HandleErrors` to any class method where you want to handle
+  errors.
+- **Benefits**: Centralizes error handling logic, making the codebase cleaner
+  and easier to maintain.
 
-### UsersController Class
+## 2. Model Container
 
-#### Methods:
+The `ModelContainer` decorator is used to inject Sequelize models into classes
+using the [TypeDI](https://github.com/typestack/typedi) container. It retrieves
+the model based on the table name and registers it in the container.
 
-- `getAllUsers`: Retrieves a list of users from the database, and sends a successful response with the user data.
-- `createUser`: Creates a new user in the database, and sends a successful response with the created user's data.
-- `login`: Logs in a user, and sends a successful response with a login token.
+- **Usage**: Use `@ModelContainer('tableName')` to inject a Sequelize model into
+  a class property.
+- **Benefits**: Simplifies dependency injection of models, promoting cleaner and
+  more maintainable code.
 
-#### Tainted Fields and Sanitization:
+## 3. Pagination
 
-- `TaintedFields`: A list of fields that should be removed from the response data for security reasons (e.g., passwords).
-- `TaintedFieldsSet`: A set created from `TaintedFields` for faster lookups.
-- `Sanitized`: A type that represents an object with the tainted fields removed.
-- `ObjectOnly`: A type that ensures the given type `T` is an object.
+The `GetPagination` function creates a custom parameter decorator for use with
+[routing-controllers](https://github.com/typestack/routing-controllers) to
+easily handle pagination in your API endpoints.
 
-### Explanation for New Users
+- **Usage**: Apply `@GetPagination()` to any controller action parameter to
+  receive pagination parameters from the request query.
+- **Benefits**: Streamlines the process of implementing pagination, making your
+  API more robust and user-friendly.
 
-The `BaseController` class provides a set of utility methods for sending HTTP responses in a consistent manner. It has methods to set the HTTP status code, response data, response message, and response type. It also provides a method to send the response, and utility methods for handling successful and error responses.
+## 4. Camel Case Transformation
 
-The `UsersController` class is an example of how the `BaseController` can be extended to implement specific functionality for a resource in your application, in this case, users. It includes methods to get all users, create a user, and log in a user. These methods interact with a user service to perform the required operations, and then use the `BaseController`'s utility methods to send the HTTP response.
+The `BodyToCamelCase` decorator is used to transform the keys of the request
+body from snake_case to camelCase.
 
-The `TaintedFields` and related types and constants are used to define fields that should be removed from the response data before sending it, to prevent sensitive information from being exposed.
+- **Usage**: Apply `@BodyToCamelCase()` to any controller action parameter to
+  receive the request body with keys in camelCase.
+- **Benefits**: Ensures consistency in variable naming conventions across your
+  codebase, regardless of how the client sends the data.
 
-This structure promotes reusability, consistency, and security in handling HTTP responses throughout your application.
+---
+
+### Security
+
+# Tainted Fields Concept
+
+The "Tainted Fields" concept in this project refers to the practice of marking
+certain fields within objects as sensitive or secure, ensuring that they are not
+accidentally exposed or sent in responses to clients. This is particularly
+important for fields that store sensitive information such as hashed passwords.
+
+## Implementation
+
+### TaintedFields Object
+
+The `TaintedFields` object is a constant that explicitly lists out the fields
+that are considered tainted or sensitive. For example:
+
+```typescript
+const TaintedFields = {
+  HASHEDPASSWORD: "hashedPassword",
+  HASHED_PASSWORD: "hashed_password",
+  PASSWORD: "password",
+} as const;
+```
+
+### TaintedFieldsSet
+
+The `TaintedFieldsSet` is a Set created from the values of the `TaintedFields`
+object. This Set is then used for quick lookups to check if a field is tainted.
+
+```typescript
+const TaintedFieldsSet = new Set<string>(Object.values(TaintedFields));
+```
+
+### Utility Types
+
+- **TaintedFieldTypes**: A type representing the values of the `TaintedFields`
+  object.
+- **Sanitized**: A utility type that takes an object type `T` and returns a new
+  type with the tainted fields omitted.
+- **ObjectOnly**: A utility type that ensures the given type `T` is an object
+  and not a primitive type.
+
+```typescript
+type TaintedFieldTypes = (typeof TaintedFields)[keyof typeof TaintedFields];
+type Sanitized<T> = Omit<T, TaintedFieldTypes>;
+type ObjectOnly<T> = T extends object
+  ? T
+  : "Error: Expected an object, but received a primitive type";
+```
+
+## Usage in the BaseController
+
+The `BaseController` utilizes the `TaintedFieldsSet` and `Sanitized` type to
+sanitize data before sending it in a response. The `sanitizeData` method
+iterates over the object's keys, removing any that are present in the
+`TaintedFieldsSet`.
+
+```typescript
+private sanitizeData<T>(data: T): Sanitized<T> {
+  const sanitizedData: T = { ...data };
+  for (const key of Object.keys(data)) {
+    if (TaintedFieldsSet.has(key)) {
+      delete sanitizedData[key];
+    }
+  }
+  return sanitizedData as Sanitized<T>;
+}
+```
+
+## Benefits
+
+- **Security**: By explicitly defining and sanitizing tainted fields, the
+  project minimizes the risk of accidentally exposing sensitive information.
+- **Maintainability**: Having a centralized list of tainted fields makes it
+  easier to manage and update which fields should be considered sensitive.
+- **Readability**: The use of utility types and constants makes the code more
+  readable and the intentions behind the sanitization process clearer.
+
+This approach ensures that sensitive information is handled securely throughout
+the application, providing a robust mechanism to prevent data exposure
+vulnerabilities.
+
+---
+
+## These features collectively contribute to a more maintainable, robust, and developer-friendly codebase. They abstract away common patterns and practices, allowing developers to focus on writing business logic rather than boilerplate code.
+
+## 1. Configuration and Setup
+
+- **.env.example**: Template for environment variables required by the
+  application.
+- **.eslintrc.json**: Configuration for ESLint to maintain code quality and
+  consistency.
+- **.prettierrc**: Prettier configuration for consistent code formatting.
+- **.sequelizerc**: Configuration for Sequelize, a popular ORM for Node.js.
+- **Dockerfile.dev**: Dockerfile for setting up the development environment.
+- **docker-compose.yaml**: Docker Compose configuration to define and run
+  multi-container Docker applications.
+- **jest.config.js**: Configuration for Jest, a testing framework.
+- **nodemon.json**: Configuration for Nodemon, a utility that monitors for
+  changes in the source code and automatically restarts the server.
+- **tsconfig.json**: TypeScript configuration file.
+- **package.json**: Lists project dependencies and scripts.
+
+## 2. Continuous Integration and Deployment
+
+- **.github/workflows/test.yml**: GitHub Actions workflow for running tests to
+  ensure code integrity.
+
+## 3. Code Quality and Maintenance
+
+- **.husky/pre-commit**: Husky configuration for enforcing quality checks before
+  commits.
+- **scripts/check-env-vars.js**: Script to check the availability of required
+  environment variables.
+- **scripts/har-to-yml.js**: Utility script to convert HAR files to YAML,
+  potentially for API testing or documentation.
+
+## 4. Source Code
+
+- **src/**: Main directory containing the application's source code.
+  - **api/**: Houses controllers, core functionalities, domain logic, and
+    models.
+  - **databases/**: Contains database configurations and migration scripts.
+  - **lib/**: Utility functions, services, and other libraries.
+  - **middlewares/**: Express middlewares for tasks like authentication, error
+    handling, and validation.
+  - **app.ts**: Main application file.
+  - **server.ts**: Server setup and configuration.
+  - **env.ts**: Manages environment variables.
+
+## 5. Testing
+
+- **src/api/domain/users/**tests**/usersService.test.ts**: Unit tests for the
+  user service.
+- **src/lib/**tests**/globalSetup.ts**: Global setup configuration for tests.
+
+## 6. Documentation
+
+- **README.md**: Comprehensive documentation about the project, its setup, and
+  usage.
+- **docs/spec.yaml**: (Possibly) OpenAPI specification for API documentation.
+- **LICENSE**: Project's software license.
+
+## 7. Utilities and Helpers
+
+- **src/lib/debug/**: Debugging utilities.
+- **src/lib/env/**: Environment-related utilities.
+- **src/lib/validation/**: Validation utilities.
+- **src/lib/upload/**: File upload utilities and services.
+- **src/lib/db/**: Database utilities.
+- **src/lib/services/**: Various services like authentication, caching, and
+  more.
+
+## 8. Caching and Uploads
+
+- **src/lib/services/cache/**: Caching services and related decorators.
+- **src/lib/upload/**: File upload services and utilities.
+
+## 9. Miscellaneous
+
+- **yarn.lock**: Yarn lock file to ensure consistent installation of
+  dependencies.
+
+---
+
+Feel free to modify and expand upon this template to better suit the specifics
+of your project and to provide additional information for users and
+contributors.
