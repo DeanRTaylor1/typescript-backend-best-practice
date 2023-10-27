@@ -11,6 +11,8 @@ import { useExpressServer, useContainer } from "routing-controllers";
 import morgan from "morgan";
 import errorMiddleware from "middlewares/errors.middleware";
 import { TerminalEscapeCodes } from "@lib/debug/utils";
+import YAML from "yamljs";
+import swaggerUi from "swagger-ui-express";
 
 class App {
   private app: express.Application = express();
@@ -24,6 +26,7 @@ class App {
 
     this.connectToDatabase();
     this.registerMiddleware();
+    this.serveSwagger();
     this.initRoutes();
     this.initializeErrorHandling();
     this.registerHealthCheck();
@@ -75,6 +78,14 @@ class App {
         { stream: morganStream }
       )
     );
+  }
+
+  private serveSwagger() {
+    const filePath = path.join(__dirname, "../docs/spec.yaml");
+    console.log(filePath);
+    const swaggerDocument = YAML.load(filePath);
+
+    this.app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   }
 
   private initRoutes() {
