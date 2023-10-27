@@ -9,12 +9,12 @@ import {
   Res,
 } from "routing-controllers";
 import { Service } from "typedi";
-import { File } from "@api/domain/upload/types/upload.types";
-import { FileEnum } from "@api/domain/upload/upload.enum";
+import { File } from "@lib/upload/types/upload.types";
+import { FileEnum } from "@lib/upload/upload.enum";
 import { Response } from "express";
-import { createFileUploadOption } from "@lib/upload/utils";
-import { StorageService } from "@api/domain/upload/upload.service";
+import { StorageService } from "@lib/upload/upload.service";
 import { HandleErrors } from "@api/core/decorators/errorHandler.decorator";
+import { createFileUploadOption } from "@lib/upload/utils";
 
 @JsonController("/upload")
 @Service()

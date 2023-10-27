@@ -4,11 +4,11 @@ import User from "@api/models/entities/User.entity";
 import { CreateUserDTO } from "@api/domain/users/user.dto";
 import { AuthService } from "@services/auth/auth.service";
 import { ICreateAttributes } from "@api/models/entities/types/entity.types";
-import { StatusCodeEnum } from "@api/core/enum/api.enum";
-import { HttpException } from "@api/core/errors/HttpException";
 import { CamelCaseObj } from "@api/core/types/case.types";
 
 import { Service } from "typedi";
+import { BadRequestError } from "@api/core/errors/BadRequestError";
+import { ForbiddenError } from "@api/core/errors/ForbiddenError";
 
 @Service()
 class UsersService {
@@ -31,7 +31,7 @@ class UsersService {
     return this.usersRepository.findById(userId);
   }
 
-  public async getUserByEmail(email: string): Promise<User> {
+  public async getUserByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findByEmail(email);
   }
 
@@ -39,24 +39,33 @@ class UsersService {
     email: string,
     suppliedPassword: string
   ): Promise<string> {
-    const { id: userId, hashedPassword } = await this.getUserByEmail(email);
+    const user = await this.getUserByEmail(email);
+    if (!user) {
+      throw new BadRequestError();
+    }
 
+    const { id: userId, hashedPassword } = user;
+
+    await this.validatePassword(hashedPassword, suppliedPassword);
+
+    return this.authService.generateJWT({
+      userId,
+      email,
+    });
+  }
+
+  private async validatePassword(
+    hashedPassword: string,
+    suppliedPassword: string
+  ): Promise<void> {
     const isValid = await this.authService.compare({
       storedPassword: hashedPassword,
       suppliedPassword,
     });
 
     if (!isValid) {
-      throw new HttpException({
-        status: StatusCodeEnum.FORBIDDEN,
-        message: "Invalid password",
-      });
+      throw new ForbiddenError();
     }
-
-    return this.authService.generateJWT({
-      userId,
-      email,
-    });
   }
 
   private async hashUserPassword(

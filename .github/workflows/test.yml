@@ -79,3 +79,6 @@ jobs:
           REDIS_PORT:
           REDIS_PASSWORD:
           REDIS_USERNAME:
+          UPLOAD_TYPE: disk
+          DISKS_DIR: ./public/
+          API_URL: localhost:3000
